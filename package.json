@@ -14,5 +14,9 @@
     "url": "https://github.com/isakiDev/team-35-web-app/issues"
   },
   "homepage": "https://github.com/isakiDev/team-35-web-app#readme",
-  "description": ""
+  "description": "",
+  "workspaces": [
+    "client",
+    "server"
+  ]
 }
