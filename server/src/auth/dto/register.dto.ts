@@ -17,10 +17,9 @@ export class RegisterDto {
   lastName: string
 
   /**
-   * valida si es email, lo transforma a minúscula y quita espacios izquierda/derecha
+   * valida si es email
    */
   @IsEmail()
-  @Transform(({ value }: { value: string }) => value.toLowerCase().trim())
   email: string
 
   /**
