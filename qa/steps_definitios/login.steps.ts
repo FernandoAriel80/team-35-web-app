@@ -12,6 +12,7 @@ Given(
 When(
   'el usuario ingresa {string} en el campo email',
   async function (this: PlaywrightWorld, email: string) {
+    if (email === '<email>') email = this.email
     await this.loginPage.fillEmail(email)
   }
 )
@@ -19,6 +20,7 @@ When(
 When(
   'ingresa {string} en el campo de contraseña',
   async function (this: PlaywrightWorld, password: string) {
+    if (password === '<password>') password = this.password
     await this.loginPage.fillPassword(password)
   }
 )
