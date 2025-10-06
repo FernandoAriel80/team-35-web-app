@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Lopezandres07/qa-onboarding-credits#readme",
   "devDependencies": {
     "@cucumber/cucumber": "^12.2.0",
+    "dotenv": "^17.2.3",
     "playwright": "^1.55.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

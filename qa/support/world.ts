@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import { setWorldConstructor, World } from '@cucumber/cucumber'
 import {
   chromium,
@@ -8,10 +9,12 @@ import {
   Page,
 } from 'playwright'
 import { LoginPage } from '../pages/LoginPage'
-// import { RegisterPage } from '../pages/RegisterPage'
+import { CreateUserPage } from '../pages/CreateUserPage'
 // import { CreditApplicationPage } from '../pages/CreditApplicationPage'
 // import { DocumentUploadPage } from '../pages/DocumentUploadPage'
 // import { DigitalSignaturePage } from '../pages/DigitalSignaturePage'
+
+dotenv.config()
 
 export class PlaywrightWorld extends World {
   browser!: Browser
@@ -20,7 +23,7 @@ export class PlaywrightWorld extends World {
 
   // Page Objects
   loginPage!: LoginPage
-  // registerPage!: RegisterPage
+  createUserPage!: CreateUserPage
   // creditApplicationPage!: CreditApplicationPage
   // documentUploadPage!: DocumentUploadPage
   // digitalSignaturePage!: DigitalSignaturePage
@@ -29,6 +32,8 @@ export class PlaywrightWorld extends World {
   browserName = process.env.BROWSER || 'chromium'
   headless = process.env.HEADLESS !== 'false'
   baseURL = process.env.BASE_URL || 'http://localhost:3000' // Validar URL ⚠️
+  email = process.env.TEST_USER_EMAIL || 'default_user@qa.com'
+  password = process.env.TEST_USER_PASSWORD || 'Default123!'
 
   async init() {
     const browsers: any = { chromium, firefox, webkit }
@@ -49,7 +54,7 @@ export class PlaywrightWorld extends World {
 
     // Instanciar Page Objects
     this.loginPage = new LoginPage(this.page)
-    // this.registerPage = new RegisterPage(this.page)
+    this.createUserPage = new CreateUserPage(this.page)
     // this.creditApplicationPage = new CreditApplicationPage(this.page)
     // this.documentUploadPage = new DocumentUploadPage(this.page)
     // this.digitalSignaturePage = new DigitalSignaturePage(this.page)
