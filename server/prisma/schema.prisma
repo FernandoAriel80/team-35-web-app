@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  //output   = "../generated/prisma"
 }
 
 datasource db {
@@ -13,23 +13,17 @@ model User {
   name             String
   email            String             @unique
   password         String
+  //tokenVersion Int      @default(1) 
   role             UserRole           @default(USER)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  DigitalSignature DigitalSignature[]
   Company          Company[]
-}
-
-enum UserRole {
-  USER
-  ADMIN
-  OPERATOR
+  DigitalSignature DigitalSignature[]
 }
 
 model Company {
   id                 Int                 @id @default(autoincrement())
   userId             Int
-  user               User                @relation(fields: [userId], references: [id])
   name               String
   type               String
   taxId              String
@@ -38,46 +32,53 @@ model Company {
   address            String
   website            String?
   email              String
+  user               User                @relation(fields: [userId], references: [id])
   creditApplications CreditApplication[]
 }
 
 model CreditApplication {
   id               Int                @id @default(autoincrement())
   companyId        Int
-  company          Company            @relation(fields: [companyId], references: [id])
   requestedAmount  Int
   status           ApplicationStatus  @default(PENDING)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  documents        Document[]
+  company          Company            @relation(fields: [companyId], references: [id])
   digitalSignature DigitalSignature[]
+  documents        Document[]
+}
+
+model Document {
+  id                  Int                @id @default(autoincrement())
+  creditApplicationId Int
+  url                 String
+  uploadedAt          DateTime           @default(now())
+  digitalSignatures   DigitalSignature[]
+  creditApplication   CreditApplication  @relation(fields: [creditApplicationId], references: [id])
+}
+
+model DigitalSignature {
+  id                  Int               @id @default(autoincrement())
+  creditApplicationId Int
+  documentId          Int
+  signedAt            DateTime          @default(now())
+  signedDocumentUrl   String
+  signerId            Int?
+  creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id])
+  document            Document          @relation(fields: [documentId], references: [id])
+  signer              User?             @relation(fields: [signerId], references: [id])
+
+  @@unique([creditApplicationId, documentId])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  OPERATOR
 }
 
 enum ApplicationStatus {
   PENDING
   APPROVED
   REJECTED
-}
-
-model Document {
-  id                  Int                @id @default(autoincrement())
-  creditApplication   CreditApplication  @relation(fields: [creditApplicationId], references: [id])
-  creditApplicationId Int
-  url                 String
-  uploadedAt          DateTime           @default(now())
-  digitalSignatures   DigitalSignature[]
-}
-
-model DigitalSignature {
-  id                  Int               @id @default(autoincrement())
-  creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id])
-  creditApplicationId Int
-  document            Document          @relation(fields: [documentId], references: [id])
-  documentId          Int
-  signedAt            DateTime          @default(now())
-  signedDocumentUrl   String
-  signer              User?             @relation(fields: [signerId], references: [id])
-  signerId            Int?
-
-  @@unique([creditApplicationId, documentId])
 }
