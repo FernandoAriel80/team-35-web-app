@@ -6,7 +6,7 @@ export class AuthMapper {
   static toDto(user: User): AuthDto {
     return {
       id: user.id,
-      name: user.name as string,
+      name: user.name,
       email: user.email,
       role: user.role as UserRole,
       password: user.password,

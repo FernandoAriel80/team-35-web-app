@@ -6,4 +6,4 @@ import { PrismaModule } from 'src/shared/infraestructure/database/prisma.module'
   providers: [],
   exports: [],
 })
-export class UsersModule {}
+export class SharedModule {}

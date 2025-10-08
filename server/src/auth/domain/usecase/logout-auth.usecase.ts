@@ -1,6 +1,6 @@
-import { LoginResponse } from '../dto/login-response.dto'
+import { LogoutResponseDto } from '../dto/logout-response.dto'
 
 export const LOGOUT_AUTH_USE_CASE = 'LOGOUT_AUTH_USE_CASE'
 export interface LogoutAuthUseCase {
-  execute(password: string, email: string): Promise<LoginResponse>
+  execute(userId: number): LogoutResponseDto
 }

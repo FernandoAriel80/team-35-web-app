@@ -16,7 +16,13 @@ export class AuthPgRepository implements AuthRepository {
 
   async findByEmail(email: string): Promise<AuthDto | null> {
     const auth = await this.prismaService.user.findFirst({
-      where: { email },
+      where: { email: email },
+    })
+    return auth ? AuthMapper.toDto(auth) : null
+  }
+  async findOne(authId: number): Promise<AuthDto | null> {
+    const auth = await this.prismaService.user.findFirst({
+      where: { id: authId },
     })
     return auth ? AuthMapper.toDto(auth) : null
   }

@@ -6,14 +6,7 @@ export class CreateAuthDto {
    */
   @IsNotEmpty()
   @IsString()
-  firstName: string
-
-  /**
-   * valida si es string y que no sea vacío
-   */
-  @IsNotEmpty()
-  @IsString()
-  lastName: string
+  name: string
 
   /**
    * valida si es email y que no sea vacío

@@ -1,4 +1,9 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common'
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { LoginAuthUseCase } from 'src/auth/domain/usecase/login-auth.usecase'
 import type { AuthRepository } from 'src/auth/domain/repository/auth.repository'
 import { AUTH_PG_REPOSITORY } from 'src/auth/domain/repository/auth.repository'
@@ -22,7 +27,7 @@ export class LoginAuthImplUseCase implements LoginAuthUseCase {
       password,
       user.password,
     )
-    if (!isPassword) throw new ConflictException('Password is incorrect')
+    if (!isPassword) throw new UnauthorizedException('Password is incorrect')
 
     const payload = {
       sub: user.id,
@@ -32,7 +37,7 @@ export class LoginAuthImplUseCase implements LoginAuthUseCase {
     }
 
     const accessToken = await this.jwtService.signAsync(payload, {
-      expiresIn: '1h',
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
       secret: process.env.JWT_ACCESS_SECRET,
     })
     return {
