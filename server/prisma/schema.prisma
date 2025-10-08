@@ -1,12 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
- // output   = "../generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,19 +8,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  CLIENT
-  ADMIN
+model User {
+  id               Int                @id @default(autoincrement())
+  name             String
+  email            String             @unique
+  password         String
+  role             UserRole           @default(USER)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  DigitalSignature DigitalSignature[]
+  Company          Company[]
 }
 
-model User {
-  id           String      @id @default(uuid())
-  firstName    String
-  lastName     String 
-  email        String   @unique
-  password     String
-  tokenVersion Int      @default(0)
-  role         Role     @default(CLIENT)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+enum UserRole {
+  USER
+  ADMIN
+  OPERATOR
 }
+
+model Company {
+  id                 Int                 @id @default(autoincrement())
+  userId             Int
+  user               User                @relation(fields: [userId], references: [id])
+  name               String
+  type               String
+  taxId              String
+  activity           String
+  employeeCount      Int
+  address            String
+  website            String?
+  email              String
+  creditApplications CreditApplication[]
+}
+
+model CreditApplication {
+  id               Int                @id @default(autoincrement())
+  companyId        Int
+  company          Company            @relation(fields: [companyId], references: [id])
+  requestedAmount  Int
+  status           ApplicationStatus  @default(PENDING)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  documents        Document[]
+  digitalSignature DigitalSignature[]
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Document {
+  id                  Int                @id @default(autoincrement())
+  creditApplication   CreditApplication  @relation(fields: [creditApplicationId], references: [id])
+  creditApplicationId Int
+  url                 String
+  uploadedAt          DateTime           @default(now())
+  digitalSignatures   DigitalSignature[]
+}
+
+model DigitalSignature {
+  id                  Int               @id @default(autoincrement())
+  creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id])
+  creditApplicationId Int
+  document            Document          @relation(fields: [documentId], references: [id])
+  documentId          Int
+  signedAt            DateTime          @default(now())
+  signedDocumentUrl   String
+  signer              User?             @relation(fields: [signerId], references: [id])
+  signerId            Int?
+
+  @@unique([creditApplicationId, documentId])
+}
+
