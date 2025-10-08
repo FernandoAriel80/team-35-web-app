@@ -5,7 +5,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className='bg-white shadow-sm sticky top-0 z-50'>
+    <header className='bg-white shadow-md sticky top-0 z-50'>
       <nav className='container mx-auto flex items-center justify-between py-4 px-10'>
         <Link
           to='/'
@@ -67,25 +67,25 @@ function Header() {
           </li>
           <li>
             <Link
-              to='/productos'
+              to='/services'
               className='block px-4 py-2 hover:text-blue-600 transition'
               onClick={() => setMenuOpen(false)}
             >
-              Productos
+              Servicios
             </Link>
           </li>
           <li>
             <Link
-              to='/recursos'
+              to='/about-us'
               className='block px-4 py-2 hover:text-blue-600 transition'
               onClick={() => setMenuOpen(false)}
             >
-              Recursos
+              Conócenos
             </Link>
           </li>
           <li>
             <Link
-              to='/contacto'
+              to='/contact'
               className='block px-4 py-2 hover:text-blue-600 transition'
               onClick={() => setMenuOpen(false)}
             >
@@ -101,11 +101,11 @@ function Header() {
               Iniciar Sesión
             </Link>
             <Link
-              to='/solicitar'
+              to='/register'
               className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
-              Solicitar Crédito
+              Registrarse
             </Link>
           </div>
         </ul>
