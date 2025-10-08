@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  Inject,
   Post,
   Req,
   Res,
@@ -9,11 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import type { Response, Request } from 'express'
-import { AuthService } from './auth.service'
-import { RegisterDto } from './dto/register.dto'
-import { LoginDto } from './dto/login.dto'
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard'
-import { UserEntity } from 'src/users/user.entity'
+import { LoginDto } from '../../domain/dto/login.dto'
+import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard'
+import { UserEntity } from 'src/users/domain/entity/user.entity'
+import type { RegisterAuthUseCase } from 'src/auth/domain/usecase/register-auth.usecase'
+import { REGISTER_AUTH_USE_CASE } from 'src/auth/domain/usecase/register-auth.usecase'
+import { CreateAuthDto } from 'src/auth/domain/dto/create-auth.dto'
+import { AuthDto } from 'src/auth/domain/dto/auth.dto'
 
 /**
  * Represents cookies used for authentication.
@@ -31,7 +34,10 @@ export interface MyCookies {
  */
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    @Inject(REGISTER_AUTH_USE_CASE)
+    private readonly registerAuthImplUseCase: RegisterAuthUseCase,
+  ) {}
 
   /**
    * Register a new user.
@@ -39,14 +45,8 @@ export class AuthController {
    * @returns Created user data.
    */
   @Post('register')
-  async register(@Body() dto: RegisterDto) {
-    const user = await this.authService.register(
-      dto.firstName,
-      dto.lastName,
-      dto.email,
-      dto.password,
-    )
-    return { status: 'ok', user }
+  async register(@Body() dto: CreateAuthDto): Promise<AuthDto> {
+    return await this.registerAuthImplUseCase.execute(dto)
   }
 
   /**

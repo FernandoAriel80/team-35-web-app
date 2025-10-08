@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from '@nestjs/common'
-import { UsersService } from 'src/users/users.service'
+import { UsersService } from 'src/users/application/service/users.service'
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt'
-import { RegisterTokenDto } from './dto/register.token.dto'
+import { RegisterTokenDto } from './domain/dto/register.token.dto'
 
 /**
  * Authentication service responsible for user registration, login, token management, and logout.

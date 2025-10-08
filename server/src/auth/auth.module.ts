@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
-import { AuthService } from './auth.service'
-import { AuthController } from './auth.controller'
-import { PrismaModule } from 'prisma/prisma.module'
+import { AuthController } from './infraestructure/controller/auth.controller'
 import { UsersModule } from 'src/users/users.module'
-import { UsersService } from 'src/users/users.service'
-import { UserEntity } from 'src/users/user.entity'
+import { UsersService } from 'src/users/application/service/users.service'
+import { UserEntity } from 'src/users/domain/entity/user.entity'
+import { AUTH_PG_REPOSITORY } from './domain/repository/auth.repository'
+import { RegisterAuthImplUseCase } from './application/usecase/register-auth-impl.usecase'
+import { PrismaModule } from 'src/shared/infraestructure/database/prisma.module'
+import { AuthService } from './application/service/auth.service'
 
 @Module({
   imports: [
@@ -18,7 +20,14 @@ import { UserEntity } from 'src/users/user.entity'
       signOptions: { expiresIn: '15m' },
     }),
   ],
-  providers: [AuthService, UsersService],
+  providers: [
+    AuthService,
+    UsersService,
+    {
+      provide: AUTH_PG_REPOSITORY,
+      useClass: RegisterAuthImplUseCase,
+    },
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
