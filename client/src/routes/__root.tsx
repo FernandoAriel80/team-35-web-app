@@ -9,5 +9,5 @@ export const Route = createRootRoute({
       <Outlet />
       <Footer />
     </div>
-  ),
+  )
 })
