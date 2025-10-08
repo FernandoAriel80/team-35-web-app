@@ -1,9 +1,6 @@
 export class UserDto {
   id: string
-  firstName: string
-  lastName: string
+  name: string
   email: string
-  password: string
-  tokenVersion: number
   role: string
 }

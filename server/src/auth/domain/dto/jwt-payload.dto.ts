@@ -2,7 +2,7 @@ import { IsString, IsNumber } from 'class-validator'
 
 export class RegisterTokenDto {
   @IsString()
-  id: string
+  id: number
 
   @IsNumber()
   tokenVersion: number

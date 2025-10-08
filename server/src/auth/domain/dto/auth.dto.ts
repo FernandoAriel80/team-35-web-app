@@ -1,9 +1,9 @@
-import { Role } from '../enums/role.enum'
+import { UserRole } from '../../../shared/domain/enums/user-role.enum'
 
 export class AuthDto {
-  id: string
-  firstName: string
-  lastName: string
+  id: number
+  name: string
   email: string
-  role: Role
+  role: UserRole
+  password: string
 }

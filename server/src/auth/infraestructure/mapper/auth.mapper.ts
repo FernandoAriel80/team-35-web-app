@@ -1,15 +1,15 @@
 import { AuthDto } from 'src/auth/domain/dto/auth.dto'
 import { User } from '@prisma/client'
-import { Role } from 'src/auth/domain/enums/role.enum'
+import { UserRole } from 'src/shared/domain/enums/user-role.enum'
 
 export class AuthMapper {
   static toDto(user: User): AuthDto {
     return {
       id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      name: user.name as string,
       email: user.email,
-      role: user.role as Role,
+      role: user.role as UserRole,
+      password: user.password,
     }
   }
 }

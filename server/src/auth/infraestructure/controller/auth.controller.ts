@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  HttpStatus,
   Inject,
   Post,
   Req,
@@ -17,6 +18,9 @@ import type { RegisterAuthUseCase } from 'src/auth/domain/usecase/register-auth.
 import { REGISTER_AUTH_USE_CASE } from 'src/auth/domain/usecase/register-auth.usecase'
 import { CreateAuthDto } from 'src/auth/domain/dto/create-auth.dto'
 import { AuthDto } from 'src/auth/domain/dto/auth.dto'
+import { LoginResponse } from 'src/auth/domain/dto/login-response.dto'
+import { LoginAuthImplUseCase } from 'src/auth/application/usecase/login-auth-impl.usecase'
+import { LOGIN_AUTH_USE_CASE } from 'src/auth/domain/usecase/login-auth.usecase'
 
 /**
  * Represents cookies used for authentication.
@@ -37,6 +41,8 @@ export class AuthController {
   constructor(
     @Inject(REGISTER_AUTH_USE_CASE)
     private readonly registerAuthImplUseCase: RegisterAuthUseCase,
+    @Inject(LOGIN_AUTH_USE_CASE)
+    private readonly loginAuthImplUseCase: LoginAuthImplUseCase,
   ) {}
 
   /**
@@ -54,51 +60,12 @@ export class AuthController {
    * The refresh token is set in an HttpOnly cookie.
    */
   @Post('login')
-  @HttpCode(200)
-  async login(
-    @Body() dto: LoginDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const user = await this.authService.validateUser(dto.email, dto.password)
-    if (!user) throw new UnauthorizedException('Invalid credentials')
-
-    const { accessToken, refreshToken } = this.authService.login(user)
-
-    // Store refresh token securely in cookie
-    res.cookie('jid', refreshToken, {
-      httpOnly: true,
-      path: '/auth/refresh-token',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-    })
-
-    return { accessToken }
-  }
-
-  /**
-   * Refresh access and refresh tokens using the existing refresh token cookie.
-   */
-  @Post('refresh-token')
-  async refresh(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const token = (req.cookies as MyCookies).jid
-    if (!token) throw new UnauthorizedException()
-
-    const payload = this.authService.verifyRefreshToken(token)
-    const tokens = await this.authService.refreshTokens(payload)
-
-    res.cookie('jid', tokens.refreshToken, {
-      httpOnly: true,
-      path: '/auth/refresh-token',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-    })
-
-    return { accessToken: tokens.accessToken }
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() loginDto: LoginDto): Promise<LoginResponse> {
+    return await this.loginAuthImplUseCase.execute(
+      loginDto.password,
+      loginDto.email,
+    )
   }
 
   /**
