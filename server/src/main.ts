@@ -11,7 +11,6 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .build()
-
   const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
   const document = SwaggerModule.createDocument(app, config)
