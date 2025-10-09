@@ -4,10 +4,14 @@ import Header from '../components/Header'
 
 export const Route = createRootRoute({
   component: () => (
-    <div className=''>
+    <>
       <Header />
-      <Outlet />
+
+      <div className='bg-slate-200 text-slate-950'>
+        <Outlet />
+      </div>
+
       <Footer />
-    </div>
+    </>
   )
 })
