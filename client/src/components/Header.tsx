@@ -94,14 +94,14 @@ function Header() {
           </li>
           <div className='flex flex-col md:flex-row md:items-center gap-2 mt-4 md:mt-0'>
             <Link
-              to='/login'
+              to='/'
               className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
               Iniciar Sesión
             </Link>
             <Link
-              to='/register'
+              to='/'
               className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
