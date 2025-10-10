@@ -13,5 +13,5 @@ export const Route = createRootRoute({
 
       <Footer />
     </>
-  )
+  ),
 })
