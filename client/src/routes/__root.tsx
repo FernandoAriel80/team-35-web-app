@@ -6,8 +6,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <Header />
-
-      <div className='bg-slate-200 text-slate-950'>
+      <div className='bg-slate-200 text-slate-950 min-h-dvh'>
         <Outlet />
       </div>
 
