@@ -28,6 +28,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger'
 import { LogoutResponseDto } from 'src/auth/domain/dto/logout-response.dto'
+import { CreateRegisterResponseDto } from 'src/auth/domain/dto/create-register-response.dto'
 
 /**
  * Authentication Controller
@@ -88,7 +89,9 @@ export class AuthController {
     status: 409,
     description: 'Conflict - user with this email already exists',
   })
-  async register(@Body() dto: CreateAuthDto): Promise<AuthDto> {
+  async register(
+    @Body() dto: CreateAuthDto,
+  ): Promise<CreateRegisterResponseDto> {
     if (!dto.email || !dto.password) {
       throw new BadRequestException('Email and password are required')
     }
@@ -138,8 +141,8 @@ export class AuthController {
       throw new BadRequestException('Email and password are required')
     }
     return await this.loginAuthImplUseCase.execute(
-      loginDto.email,
       loginDto.password,
+      loginDto.email,
     )
   }
 

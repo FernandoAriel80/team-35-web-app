@@ -1,13 +1,15 @@
 import { AuthDto } from 'src/auth/domain/dto/auth.dto'
-import { CreateAuthDto } from 'src/auth/domain/dto/create-auth.dto'
 import { AuthRepository } from 'src/auth/domain/repository/auth.repository'
 import { PrismaService } from 'src/shared/infraestructure/database/prisma.service'
 import { AuthMapper } from '../mapper/auth.mapper'
+import { Injectable } from '@nestjs/common'
+import { UserCreateValidatedDto } from 'src/auth/domain/dto/user-create-validated.dto'
 
+@Injectable()
 export class AuthPgRepository implements AuthRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(createAuthDto: CreateAuthDto): Promise<AuthDto> {
+  async create(createAuthDto: UserCreateValidatedDto): Promise<AuthDto> {
     const auth = await this.prismaService.user.create({
       data: createAuthDto,
     })
