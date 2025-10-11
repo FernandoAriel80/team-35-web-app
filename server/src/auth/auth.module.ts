@@ -12,6 +12,10 @@ import { LoginAuthImplUseCase } from './application/usecase/login-auth-impl.usec
 import { PasswordService } from './application/service/password-impl.service'
 import { SharedModule } from 'src/shared/shared.module'
 import { LOGIN_AUTH_USE_CASE } from './domain/usecase/login-auth.usecase'
+import { ValidateTokenImplUseCase } from './application/usecase/validate-token-impl.usecase'
+import { VALIDATE_TOKEN_USE_CASE } from './domain/usecase/validate-token-usecase'
+import { TOKEN_SERVICE } from './domain/service/token.service'
+import { TokenImplService } from './application/service/token-imple.service'
 
 @Module({
   imports: [
@@ -40,6 +44,14 @@ import { LOGIN_AUTH_USE_CASE } from './domain/usecase/login-auth.usecase'
     {
       provide: LOGOUT_AUTH_USE_CASE,
       useClass: LogoutAuthImplUseCase,
+    },
+    {
+      provide: VALIDATE_TOKEN_USE_CASE,
+      useClass: ValidateTokenImplUseCase,
+    },
+    {
+      provide: TOKEN_SERVICE,
+      useClass: TokenImplService,
     },
   ],
   controllers: [AuthController],

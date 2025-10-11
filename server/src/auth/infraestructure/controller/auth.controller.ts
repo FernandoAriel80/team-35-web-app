@@ -26,9 +26,13 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
+  ApiHeader,
 } from '@nestjs/swagger'
 import { LogoutResponseDto } from 'src/auth/domain/dto/logout-response.dto'
 import { CreateRegisterResponseDto } from 'src/auth/domain/dto/create-register-response.dto'
+import type { ValidateTokenUseCase } from 'src/auth/domain/usecase/validate-token-usecase'
+import { VALIDATE_TOKEN_USE_CASE } from 'src/auth/domain/usecase/validate-token-usecase'
+import type { Request } from 'express'
 
 /**
  * Authentication Controller
@@ -51,6 +55,9 @@ export class AuthController {
 
     @Inject(LOGOUT_AUTH_USE_CASE)
     private readonly logoutAuthUseCase: LogoutAuthUseCase,
+
+    @Inject(VALIDATE_TOKEN_USE_CASE)
+    private readonly validateTokenImplUseCase: ValidateTokenUseCase,
   ) {}
 
   /**
@@ -179,5 +186,22 @@ export class AuthController {
   logout(@Req() req: logoutRequestDto): LogoutResponseDto {
     const userId = req.user.id
     return this.logoutAuthUseCase.execute(userId)
+  }
+
+  @Post('validate-token')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Validate and renew token' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+    required: true,
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  })
+  async validateToken(@Req() request: Request) {
+    try {
+      return this.validateTokenImplUseCase.execute(request)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
