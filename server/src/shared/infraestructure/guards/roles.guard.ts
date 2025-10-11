@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core'
 import { ROLES_KEY } from '../decorators/roles.decorator'
 import { UserRole } from 'src/shared/domain/enums/user-role.enum'
-import { JwtPayloadDto } from 'src/shared/domain/dto/jwt-payload.dto'
+import { JwtPayloadGuardDto } from 'src/shared/domain/dto/jwt-payload-guard.dto'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -20,7 +20,7 @@ export class RolesGuard implements CanActivate {
     )
     if (!requiredRoles) return true
 
-    const user = context.switchToHttp().getRequest<JwtPayloadDto>()
+    const user = context.switchToHttp().getRequest<JwtPayloadGuardDto>()
 
     if (!user) {
       throw new ForbiddenException('User not authenticated')
