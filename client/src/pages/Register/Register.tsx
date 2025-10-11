@@ -1,15 +1,24 @@
 import { useForm } from "react-hook-form"
 
-import { Link } from "@tanstack/react-router"
+import { Link, useRouter } from "@tanstack/react-router"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { type RegisterFormValues, invoiceSchema } from './register.schema'
 import { ErrorMessage } from "../../components/ErrorMessage"
 import { useAuth } from "../../hooks/useAuth"
+import { useEffect } from "react"
 
 export const Register = () => {
+  const { handleRegister, status } = useAuth()
 
-  const { handleRegister } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'AUTHENTICATED') {
+      router.navigate({ to: '/' })
+    }
+  }, [router, status])
+
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({ resolver: zodResolver(invoiceSchema) })
 

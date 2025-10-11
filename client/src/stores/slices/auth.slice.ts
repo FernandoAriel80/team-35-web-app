@@ -9,14 +9,14 @@ export interface AuthSlice {
   status: AuthStatus
 
   signIn: (user: User) => void
-  signOut: (user: User) => void
+  signOut: () => void
 }
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   user: null,
   status: 'PENDING',
 
-  signIn: (user) => set(() => ({ user, status: 'PENDING' })),
+  signIn: (user) => set(() => ({ user, status: 'AUTHENTICATED' })),
   signOut: () => set(() => ({ user: null, status: 'UNAUTHENTICATED' })),
 })
 

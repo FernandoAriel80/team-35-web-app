@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form"
+import { useEffect } from "react"
 
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link } from "@tanstack/react-router"
+import { Link, useRouter } from "@tanstack/react-router"
 
 import { useAuth } from "../../hooks/useAuth"
 
@@ -13,7 +14,16 @@ import { type LoginFormValues, invoiceSchema } from './login.schema'
 
 export const Login = () => {
 
-  const { handleLogin } = useAuth()
+  const { handleLogin, status } = useAuth()
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'AUTHENTICATED') {
+      router.navigate({ to: '/' })
+    }
+  }, [router, status])
+
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(invoiceSchema) })
 

@@ -1,4 +1,4 @@
-import type { LoginInput, LoginResponse, RegisterInput, RegisterResponse } from "../interfaces/auth.interface"
+import type { LoginInput, LoginResponse, RegisterInput, RegisterResponse, ValidateTokenResponse } from "../interfaces/auth.interface"
 
 const BASE_URL = 'http://localhost:3000/auth'
 
@@ -37,6 +37,27 @@ export const loginService = async (data: LoginInput): Promise<LoginResponse> => 
     if (!response.ok) throw new Error(`Error: ${response.status}`)
 
     const result: LoginResponse = await response.json()
+
+    return result
+  } catch (error) {
+    throw new Error('Unexpected Error')
+  }
+
+}
+export const validateTokenService = async (token: string): Promise<ValidateTokenResponse> => {
+  try {
+
+    const response = await fetch(`${BASE_URL}/validate-token`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`)
+
+    const result: ValidateTokenResponse = await response.json()
 
     return result
   } catch (error) {
