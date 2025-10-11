@@ -5,20 +5,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { type RegisterFormValues, invoiceSchema } from './register.schema'
 import { ErrorMessage } from "../../components/ErrorMessage"
+import { useAuth } from "../../hooks/useAuth"
 
 export const Register = () => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-      confirmPassword: ''
-    }
-  })
+  const { handleRegister } = useAuth()
 
-  const onSubmit = (data: RegisterFormValues) => {
-    console.log("Datos de registro:", data)
+  const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({ resolver: zodResolver(invoiceSchema) })
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    await handleRegister(data)
   }
 
   const errorMessages = Object.values(errors).map(({ message }) => message)
@@ -39,6 +35,14 @@ export const Register = () => {
           </p>
 
         </header>
+
+        <input
+          {...register("name")}
+          required
+          className="text-sm font-normal outline w-full rounded-t-sm bg-slate-200 outline-slate-300 p-2"
+          type="text"
+          placeholder="Nombre Completo"
+        />
 
         <input
           {...register("email")}

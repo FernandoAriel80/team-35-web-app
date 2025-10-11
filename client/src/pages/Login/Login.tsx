@@ -1,22 +1,24 @@
 import { useForm } from "react-hook-form"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { type LoginFormValues, invoiceSchema } from './login.schema'
 import { Link } from "@tanstack/react-router"
+
+import { useAuth } from "../../hooks/useAuth"
+
 import { ErrorMessage } from "../../components/ErrorMessage"
+
+import type { LoginInput } from "../../interfaces/auth.interface"
+import { type LoginFormValues, invoiceSchema } from './login.schema'
+
 
 export const Login = () => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: {
-      email: '',
-      password: ''
-    }
-  })
+  const { handleLogin } = useAuth()
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(invoiceSchema) })
+
+  const onSubmit = async (data: LoginInput) => {
+    await handleLogin(data)
   }
 
   const errorMessages = Object.values(errors).map(({ message }) => message)
