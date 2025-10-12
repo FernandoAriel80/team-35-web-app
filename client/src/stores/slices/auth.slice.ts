@@ -2,7 +2,7 @@ import { type StateCreator } from 'zustand'
 
 import { type User } from '../../interfaces'
 
-type AuthStatus = 'PENDING' | 'AUTHENTICATED' | 'UNAUTHENTICATED'
+export type AuthStatus = 'PENDING' | 'AUTHENTICATED' | 'UNAUTHENTICATED'
 
 export interface AuthSlice {
   user: User | null,
@@ -19,4 +19,3 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   signIn: (user) => set(() => ({ user, status: 'AUTHENTICATED' })),
   signOut: () => set(() => ({ user: null, status: 'UNAUTHENTICATED' })),
 })
-

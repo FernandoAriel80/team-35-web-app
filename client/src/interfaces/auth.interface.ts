@@ -25,7 +25,13 @@ export interface RegisterResponse extends User {
 
 export interface ValidateTokenResponse {
   new_access_token: string
-  refresh_token?: string
+  user: User
   expires_in: number
   valid: boolean
+}
+
+export interface ErrorResponse {
+  statusCode: number
+  message: string | string[]
+  error: string
 }
