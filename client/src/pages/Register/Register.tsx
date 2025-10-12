@@ -1,29 +1,32 @@
 import { useForm } from "react-hook-form"
 
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { type RegisterFormValues, invoiceSchema } from './register.schema'
 import { ErrorMessage } from "../../components/ErrorMessage"
 import { useAuth } from "../../hooks/useAuth"
-import { useEffect } from "react"
+
+import toast from "react-hot-toast"
 
 export const Register = () => {
-  const { handleRegister, status } = useAuth()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    if (status === 'AUTHENTICATED') {
-      router.navigate({ to: '/' })
-    }
-  }, [router, status])
-
-
+  const { handleRegister } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({ resolver: zodResolver(invoiceSchema) })
 
+  const navigate = useNavigate()
+
   const onSubmit = async (data: RegisterFormValues) => {
-    await handleRegister(data)
+    toast.promise(
+      handleRegister(data)
+        .then(async () => {
+          await navigate({ to: '/' })
+        }),
+      {
+        loading: <b>Cargando...</b>,
+        success: <b>Bienvenid@ ✨️</b>,
+        error: (err) => <b>{err.message}</b>,
+      },
+    )
   }
 
   const errorMessages = Object.values(errors).map(({ message }) => message)

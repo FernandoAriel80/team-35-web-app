@@ -1,8 +1,8 @@
-import { useEffect } from "react"
-
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 
 import { useAuth } from "../../hooks/useAuth"
 
@@ -11,24 +11,24 @@ import { ErrorMessage } from "../../components/ErrorMessage"
 import type { LoginInput } from "../../interfaces/auth.interface"
 import { type LoginFormValues, invoiceSchema } from './login.schema'
 
-
 export const Login = () => {
-
-  const { handleLogin, status } = useAuth()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    if (status === 'AUTHENTICATED') {
-      router.navigate({ to: '/' })
-    }
-  }, [router, status])
-
-
+  const { handleLogin } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(invoiceSchema) })
 
+  const navigate = useNavigate()
+
   const onSubmit = async (data: LoginInput) => {
-    await handleLogin(data)
+    toast.promise(
+      handleLogin(data)
+        .then(async () => {
+          await navigate({ to: '/' })
+        }),
+      {
+        loading: <b>Iniciando sesión...</b>,
+        success: <b>Bienvenid@ ✨️</b>,
+        error: (err) => <b>{err.message}</b>
+      }
+    )
   }
 
   const errorMessages = Object.values(errors).map(({ message }) => message)
