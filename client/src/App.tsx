@@ -1,15 +1,30 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { useEffect } from "react"
 
-const router = createRouter({ routeTree });
+import { RouterProvider } from "@tanstack/react-router"
+import { router } from "./router"
+
+import { useAuth } from "./hooks/useAuth"
+import Spinner from "./components/Spinner"
 
 function App() {
-  return <RouterProvider router={router} />;
-}
-//----------------------------------------
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
+  const { user, status, isAuthenticated, handleValidateToken } = useAuth()
+
+  const authContext = {
+    user,
+    status,
+    isAuthenticated
   }
+
+  useEffect(() => {
+    handleValidateToken()
+      .then()
+  }, [])
+
+  if (status === 'PENDING') {
+    return <Spinner />
+  }
+
+  return <RouterProvider router={router} context={{ auth: authContext }} />
 }
-export default App;
+
+export default App

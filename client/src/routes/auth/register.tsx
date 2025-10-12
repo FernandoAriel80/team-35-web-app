@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
-import { Login } from '../../pages/Login/Login'
+import { Register } from '../../pages/Register/Register'
 
-export const Route = createFileRoute('/auth/login')({
+export const Route = createFileRoute('/auth/register')({
   component: RouteComponent,
   beforeLoad: ({ context }) => {
     if (context.auth.isAuthenticated) {
@@ -12,5 +12,5 @@ export const Route = createFileRoute('/auth/login')({
 })
 
 function RouteComponent() {
-  return <Login />
+  return <Register />
 }

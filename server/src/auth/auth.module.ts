@@ -1,37 +1,36 @@
 import { Module } from '@nestjs/common'
-import { JwtModule } from '@nestjs/jwt'
 import { AuthController } from './infraestructure/controller/auth.controller'
-import { AUTH_PG_REPOSITORY } from './domain/repository/auth.repository'
-import { RegisterAuthImplUseCase } from './application/usecase/register-auth-impl.usecase'
-import { PrismaModule } from 'src/shared/infraestructure/database/prisma.module'
-import { AuthPgRepository } from './infraestructure/repository/auth-pg.repository'
-import { REGISTER_AUTH_USE_CASE } from './domain/usecase/register-auth.usecase'
 import { LOGOUT_AUTH_USE_CASE } from './domain/usecase/logout-auth.usecase'
 import { LogoutAuthImplUseCase } from './application/usecase/logout-auth-impl.usecase'
 import { LoginAuthImplUseCase } from './application/usecase/login-auth-impl.usecase'
-import { PasswordService } from './application/service/password-impl.service'
 import { SharedModule } from 'src/shared/shared.module'
 import { LOGIN_AUTH_USE_CASE } from './domain/usecase/login-auth.usecase'
+import { ValidateTokenImplUseCase } from './application/usecase/validate-token-impl.usecase'
+import { VALIDATE_TOKEN_USE_CASE } from './domain/usecase/validate-token-usecase'
+import { PasswordImplService } from 'src/shared/application/service/password-impl.service'
+import { PASSWORD_SERVICE } from 'src/shared/domain/service/password.service'
+import { TokenImplService } from 'src/shared/application/service/token-imple.service'
+import { TOKEN_SERVICE } from 'src/shared/domain/service/toker.service'
+import { USER_REPOSITORY } from 'src/users/domain/repository/user.repository'
+import { UserPgRepository } from 'src/users/infraestructure/repository/user-pg.repository'
+import { PassportModule } from '@nestjs/passport'
+import { JwtStrategy } from 'src/shared/infraestructure/strategies/jwt.strategy'
 
 @Module({
-  imports: [
-    PrismaModule,
-    SharedModule,
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_ACCESS_SECRET,
-      signOptions: { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION },
-    }),
-  ],
+  imports: [SharedModule, PassportModule],
   providers: [
-    PasswordService,
+    JwtStrategy,
     {
-      provide: AUTH_PG_REPOSITORY,
-      useClass: AuthPgRepository,
+      provide: USER_REPOSITORY,
+      useClass: UserPgRepository,
     },
     {
-      provide: REGISTER_AUTH_USE_CASE,
-      useClass: RegisterAuthImplUseCase,
+      provide: PASSWORD_SERVICE,
+      useClass: PasswordImplService,
+    },
+    {
+      provide: TOKEN_SERVICE,
+      useClass: TokenImplService,
     },
     {
       provide: LOGIN_AUTH_USE_CASE,
@@ -40,6 +39,10 @@ import { LOGIN_AUTH_USE_CASE } from './domain/usecase/login-auth.usecase'
     {
       provide: LOGOUT_AUTH_USE_CASE,
       useClass: LogoutAuthImplUseCase,
+    },
+    {
+      provide: VALIDATE_TOKEN_USE_CASE,
+      useClass: ValidateTokenImplUseCase,
     },
   ],
   controllers: [AuthController],

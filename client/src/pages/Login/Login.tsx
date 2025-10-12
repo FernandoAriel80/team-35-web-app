@@ -1,33 +1,49 @@
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useNavigate } from '@tanstack/react-router'
+
+import { useAuth } from '../../hooks/useAuth'
+
+import { ErrorMessage } from '../../components/ErrorMessage'
+
+import type { LoginInput } from '../../interfaces/auth.interface'
 import { type LoginFormValues, invoiceSchema } from './login.schema'
 
 export const Login = () => {
+  const { handleLogin } = useAuth()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
+  } = useForm<LoginFormValues>({ resolver: zodResolver(invoiceSchema) })
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const navigate = useNavigate()
+
+  const onSubmit = async (data: LoginInput) => {
+    toast.promise(
+      handleLogin(data).then(async () => {
+        await navigate({ to: '/' })
+      }),
+      {
+        loading: <b>Iniciando sesión...</b>,
+        success: <b>Bienvenid@ ✨️</b>,
+        error: (err) => <b>{err.message}</b>,
+      }
+    )
   }
 
+  const errorMessages = Object.values(errors).map(({ message }) => message)
+
   return (
-    <section className='w-full flex  justify-center relative'>
+    <section className='w-full flex justify-center relative'>
       <form
         onSubmit={(e) => {
           e.preventDefault()
           handleSubmit(onSubmit)()
         }}
-        className='w-full max-w-[22rem] h-fit my-20 bg-slate-100 rounded-xl flex flex-col items-center p-8 border border-slate-200 shadow'
+        className='w-full max-w-[22rem] h-fit mt-20 bg-slate-100 rounded-xl flex flex-col items-center p-8 border border-slate-200 shadow'
       >
         <header className='text-center mb-6'>
           <h1 className='font-bold text-2xl'>Bienvenido a Financia</h1>
@@ -52,17 +68,12 @@ export const Login = () => {
           placeholder='Contraseña'
         />
 
-        {errors.email && (
-          <p className='text-red-500 text-xs w-full pt-3'>
-            {errors.email.message}
-          </p>
-        )}
-
-        {errors.password && (
-          <p className='text-red-500 text-xs w-full pt-3'>
-            {errors.password.message}
-          </p>
-        )}
+        {errorMessages.map((message, index) => (
+          <ErrorMessage
+            key={index}
+            message={message}
+          />
+        ))}
 
         <footer className='flex flex-col justify-center mt-4 w-full gap-4'>
           <a
@@ -79,12 +90,15 @@ export const Login = () => {
             Iniciar Sesión
           </button>
 
-          <p className='text-xs text-center'>
+          <span className='text-xs text-center'>
             ¿No tienes una cuenta?{' '}
-            <span className='text-[#1183d4] hover:text-[#0e6fb4] hover:cursor-pointer'>
+            <Link
+              to='/auth/register'
+              className='text-[#1183d4] hover:text-[#0e6fb4] hover:cursor-pointer'
+            >
               Regístrate
-            </span>
-          </p>
+            </Link>
+          </span>
         </footer>
       </form>
     </section>

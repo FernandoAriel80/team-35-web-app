@@ -11,10 +11,6 @@ import {
 } from '@nestjs/common'
 import { LoginDto } from '../../domain/dto/login.dto'
 import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard'
-import type { RegisterAuthUseCase } from 'src/auth/domain/usecase/register-auth.usecase'
-import { REGISTER_AUTH_USE_CASE } from 'src/auth/domain/usecase/register-auth.usecase'
-import { CreateAuthDto } from 'src/auth/domain/dto/create-auth.dto'
-import { AuthDto } from 'src/auth/domain/dto/auth.dto'
 import { LoginResponse } from 'src/auth/domain/dto/login-response.dto'
 import { LOGIN_AUTH_USE_CASE } from 'src/auth/domain/usecase/login-auth.usecase'
 import type { LoginAuthUseCase } from 'src/auth/domain/usecase/login-auth.usecase'
@@ -26,8 +22,13 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
+  ApiHeader,
 } from '@nestjs/swagger'
 import { LogoutResponseDto } from 'src/auth/domain/dto/logout-response.dto'
+import type { ValidateTokenUseCase } from 'src/auth/domain/usecase/validate-token-usecase'
+import { VALIDATE_TOKEN_USE_CASE } from 'src/auth/domain/usecase/validate-token-usecase'
+import type { Request } from 'express'
+import { AuthGuard } from '@nestjs/passport'
 
 /**
  * Authentication Controller
@@ -42,58 +43,15 @@ import { LogoutResponseDto } from 'src/auth/domain/dto/logout-response.dto'
 @Controller('auth')
 export class AuthController {
   constructor(
-    @Inject(REGISTER_AUTH_USE_CASE)
-    private readonly registerAuthImplUseCase: RegisterAuthUseCase,
-
     @Inject(LOGIN_AUTH_USE_CASE)
     private readonly loginAuthImplUseCase: LoginAuthUseCase,
 
     @Inject(LOGOUT_AUTH_USE_CASE)
     private readonly logoutAuthUseCase: LogoutAuthUseCase,
-  ) {}
 
-  /**
-   * Register a new user account
-   *
-   * @description Creates a new user with email and password credentials.
-   * Validates input and returns user data upon successful registration.
-   *
-   * @param {CreateAuthDto} dto - User registration data
-   * @returns {Promise<AuthDto>} Registered user information
-   * @throws {BadRequestException} When required fields are missing
-   *
-   * @example
-   * POST /auth/register
-   * {
-   *   "email": "user@example.com",
-   *   "password": "securePassword123"
-   * }
-   */
-  @Post('register')
-  @ApiOperation({
-    summary: 'Register new user',
-    description:
-      'Creates a new user account with email and password credentials',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'User successfully registered and returned',
-    type: AuthDto,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid input - email and password are required',
-  })
-  @ApiResponse({
-    status: 409,
-    description: 'Conflict - user with this email already exists',
-  })
-  async register(@Body() dto: CreateAuthDto): Promise<AuthDto> {
-    if (!dto.email || !dto.password) {
-      throw new BadRequestException('Email and password are required')
-    }
-    return await this.registerAuthImplUseCase.execute(dto)
-  }
+    @Inject(VALIDATE_TOKEN_USE_CASE)
+    private readonly validateTokenImplUseCase: ValidateTokenUseCase,
+  ) {}
 
   /**
    * Authenticate user and generate access token
@@ -138,8 +96,8 @@ export class AuthController {
       throw new BadRequestException('Email and password are required')
     }
     return await this.loginAuthImplUseCase.execute(
-      loginDto.email,
       loginDto.password,
+      loginDto.email,
     )
   }
 
@@ -176,5 +134,23 @@ export class AuthController {
   logout(@Req() req: logoutRequestDto): LogoutResponseDto {
     const userId = req.user.id
     return this.logoutAuthUseCase.execute(userId)
+  }
+
+  @Post('validate-token')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Validate and renew token' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+    required: true,
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  })
+  async validateToken(@Req() request: Request) {
+    try {
+      return await this.validateTokenImplUseCase.execute(request)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

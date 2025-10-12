@@ -1,8 +1,17 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { isAuthenticated, handleLogout } = useAuth()
+
+  const navigate = useNavigate()
+
+  const onLogout = () => {
+    handleLogout()
+    navigate({ to: '/' })
+  }
 
   return (
     <header className='bg-white shadow-md sticky top-0 z-50'>
@@ -93,20 +102,32 @@ function Header() {
             </Link>
           </li>
           <div className='flex flex-col md:flex-row md:items-center gap-2 mt-4 md:mt-0'>
+            {!isAuthenticated && (
+              <Link
+                to='/auth/login'
+                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
+                onClick={() => setMenuOpen(false)}
+              >
+                Iniciar Sesión
+              </Link>
+            )}
+
             <Link
-              to='/auth/login'
-              className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
-              onClick={() => setMenuOpen(false)}
-            >
-              Iniciar Sesión
-            </Link>
-            <Link
-              to='/'
+              to={isAuthenticated ? '/solicitar' : '/auth/login'}
               className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
               Registrarse
             </Link>
+
+            {isAuthenticated && (
+              <button
+                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center hover:cursor-pointer'
+                onClick={onLogout}
+              >
+                Cerrar Sesión
+              </button>
+            )}
           </div>
         </ul>
       </nav>
