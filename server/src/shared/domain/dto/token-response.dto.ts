@@ -1,5 +1,5 @@
-export interface TokenValidationResultDto {
-  new_access_token: string
+export class TokenResponseDto {
+  access_token: string
   refresh_token?: string
   user: {
     id: number
@@ -8,5 +8,5 @@ export interface TokenValidationResultDto {
     role?: string
   }
   expires_in: number
-  valid: boolean
+  valid?: boolean
 }

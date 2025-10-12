@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
+import { PasswordService } from 'src/shared/domain/service/password.service'
 
 @Injectable()
-export class PasswordService {
+export class PasswordImplService implements PasswordService {
   private readonly saltRounds = 10
 
   async hashPassword(password: string): Promise<string> {
