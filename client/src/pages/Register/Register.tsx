@@ -1,24 +1,32 @@
 import { useForm } from "react-hook-form"
 
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { type RegisterFormValues, invoiceSchema } from './register.schema'
 import { ErrorMessage } from "../../components/ErrorMessage"
+import { useAuth } from "../../hooks/useAuth"
+
+import toast from "react-hot-toast"
 
 export const Register = () => {
+  const { handleRegister } = useAuth()
+  const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({ resolver: zodResolver(invoiceSchema) })
 
-  const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-      confirmPassword: ''
-    }
-  })
+  const navigate = useNavigate()
 
-  const onSubmit = (data: RegisterFormValues) => {
-    console.log("Datos de registro:", data)
+  const onSubmit = async (data: RegisterFormValues) => {
+    toast.promise(
+      handleRegister(data)
+        .then(async () => {
+          await navigate({ to: '/' })
+        }),
+      {
+        loading: <b>Cargando...</b>,
+        success: <b>Bienvenid@ ✨️</b>,
+        error: (err) => <b>{err.message}</b>,
+      },
+    )
   }
 
   const errorMessages = Object.values(errors).map(({ message }) => message)
@@ -39,6 +47,14 @@ export const Register = () => {
           </p>
 
         </header>
+
+        <input
+          {...register("name")}
+          required
+          className="text-sm font-normal outline w-full rounded-t-sm bg-slate-200 outline-slate-300 p-2"
+          type="text"
+          placeholder="Nombre Completo"
+        />
 
         <input
           {...register("email")}

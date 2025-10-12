@@ -1,22 +1,34 @@
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { type LoginFormValues, invoiceSchema } from './login.schema'
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
+
+import { useAuth } from "../../hooks/useAuth"
+
 import { ErrorMessage } from "../../components/ErrorMessage"
 
+import type { LoginInput } from "../../interfaces/auth.interface"
+import { type LoginFormValues, invoiceSchema } from './login.schema'
+
 export const Login = () => {
+  const { handleLogin } = useAuth()
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(invoiceSchema) })
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: {
-      email: '',
-      password: ''
-    }
-  })
+  const navigate = useNavigate()
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const onSubmit = async (data: LoginInput) => {
+    toast.promise(
+      handleLogin(data)
+        .then(async () => {
+          await navigate({ to: '/' })
+        }),
+      {
+        loading: <b>Iniciando sesión...</b>,
+        success: <b>Bienvenid@ ✨️</b>,
+        error: (err) => <b>{err.message}</b>
+      }
+    )
   }
 
   const errorMessages = Object.values(errors).map(({ message }) => message)
