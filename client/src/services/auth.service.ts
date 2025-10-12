@@ -1,4 +1,4 @@
-import type { LoginInput, LoginResponse, RegisterInput, RegisterResponse, ValidateTokenResponse } from "../interfaces/auth.interface"
+import type { ErrorResponse, LoginInput, LoginResponse, RegisterInput, RegisterResponse, ValidateTokenResponse } from "../interfaces/auth.interface"
 
 const BASE_URL = 'http://localhost:3000/auth'
 
@@ -13,13 +13,16 @@ export const registerService = async (data: RegisterInput): Promise<RegisterResp
       body: JSON.stringify(data),
     })
 
-    if (!response.ok) throw new Error(`Error: ${response.status}`)
+    if (!response.ok) {
+      const error: ErrorResponse = await response.json()
+      throw error
+    }
 
     const result: RegisterResponse = await response.json()
 
     return result
   } catch (error) {
-    throw new Error('Unexpected Error')
+    handleError((error as ErrorResponse))
   }
 }
 
@@ -34,16 +37,19 @@ export const loginService = async (data: LoginInput): Promise<LoginResponse> => 
       body: JSON.stringify(data),
     })
 
-    if (!response.ok) throw new Error(`Error: ${response.status}`)
+    if (!response.ok) {
+      const error: ErrorResponse = await response.json()
+      throw error
+    }
 
     const result: LoginResponse = await response.json()
 
     return result
   } catch (error) {
-    throw new Error('Unexpected Error')
+    handleError((error as ErrorResponse))
   }
-
 }
+
 export const validateTokenService = async (token: string): Promise<ValidateTokenResponse> => {
   try {
 
@@ -55,12 +61,23 @@ export const validateTokenService = async (token: string): Promise<ValidateToken
       }
     })
 
-    if (!response.ok) throw new Error(`Error: ${response.status}`)
+    if (!response.ok) {
+      const error: ErrorResponse = await response.json()
+      throw error
+    }
 
     const result: ValidateTokenResponse = await response.json()
 
     return result
   } catch (error) {
-    throw new Error('Unexpected Error')
+    handleError((error as ErrorResponse))
   }
+}
+
+const handleError = (error: ErrorResponse) => {
+  const message = Array.isArray(error.message)
+    ? error.message.join('\n\n')
+    : error.message ?? 'Unexpected error'
+
+  throw new Error(message)
 }
