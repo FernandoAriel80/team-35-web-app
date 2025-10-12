@@ -63,7 +63,7 @@ function RouteComponent() {
           </div>
         </div>
       </section>
-      <section className='text-center text-white py-20'>
+      <section className='bg-gray-800 text-center text-white py-20'>
         <h2 className='text-2xl font-bold mb-4'>
           ¿Listo para Impulsar tu Negocio?
         </h2>

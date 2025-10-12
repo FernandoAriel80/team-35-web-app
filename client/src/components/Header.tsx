@@ -14,7 +14,7 @@ function Header() {
   }
 
   return (
-    <header className='bg-white shadow-sm sticky top-0 z-50'>
+    <header className='bg-white shadow-md sticky top-0 z-50'>
       <nav className='container mx-auto flex items-center justify-between py-4 px-10'>
         <Link
           to='/'
@@ -61,8 +61,9 @@ function Header() {
         </button>
 
         <ul
-          className={`${menuOpen ? 'flex' : 'hidden'
-            } absolute md:static top-16 left-0 w-full md:w-auto flex-col md:flex-row items-center md:space-x-2 bg-white md:bg-transparent border-t md:border-0 py-4 md:py-0 shadow-md md:shadow-none md:flex text-gray-700 font-medium`}
+          className={`${
+            menuOpen ? 'flex' : 'hidden'
+          } absolute md:static top-16 left-0 w-full md:w-auto flex-col md:flex-row items-center md:space-x-2 bg-white md:bg-transparent border-t md:border-0 py-4 md:py-0 shadow-md md:shadow-none md:flex text-gray-700 font-medium`}
         >
           <li>
             <Link
@@ -75,25 +76,25 @@ function Header() {
           </li>
           <li>
             <Link
-              to='/productos'
+              to='/services'
               className='block px-4 py-2 hover:text-blue-600 transition'
               onClick={() => setMenuOpen(false)}
             >
-              Productos
+              Servicios
             </Link>
           </li>
           <li>
             <Link
-              to='/recursos'
+              to='/about-us'
               className='block px-4 py-2 hover:text-blue-600 transition'
               onClick={() => setMenuOpen(false)}
             >
-              Recursos
+              Conócenos
             </Link>
           </li>
           <li>
             <Link
-              to='/contacto'
+              to='/contact'
               className='block px-4 py-2 hover:text-blue-600 transition'
               onClick={() => setMenuOpen(false)}
             >
@@ -101,37 +102,32 @@ function Header() {
             </Link>
           </li>
           <div className='flex flex-col md:flex-row md:items-center gap-2 mt-4 md:mt-0'>
-
-            {
-              !isAuthenticated && (
-                <Link
-                  to='/auth/login'
-                  className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Iniciar Sesión
-                </Link>
-              )
-            }
+            {!isAuthenticated && (
+              <Link
+                to='/auth/login'
+                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
+                onClick={() => setMenuOpen(false)}
+              >
+                Iniciar Sesión
+              </Link>
+            )}
 
             <Link
               to={isAuthenticated ? '/solicitar' : '/auth/login'}
               className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
-              Solicitar Crédito
+              Registrarse
             </Link>
 
-            {
-              isAuthenticated && (
-                <button
-                  className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center hover:cursor-pointer'
-                  onClick={onLogout}
-                >
-                  Cerrar Sesión
-                </button>
-              )
-            }
+            {isAuthenticated && (
+              <button
+                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center hover:cursor-pointer'
+                onClick={onLogout}
+              >
+                Cerrar Sesión
+              </button>
+            )}
           </div>
         </ul>
       </nav>
