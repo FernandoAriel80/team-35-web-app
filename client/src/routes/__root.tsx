@@ -16,13 +16,13 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
-    <>
+    <div className='flex flex-col min-h-screen'>
       <Header />
-      <div className='bg-slate-200 text-slate-950 min-h-dvh'>
+      <div className='bg-slate-200 text-slate-950 flex-1'>
         <Outlet />
       </div>
 
       <Footer />
-    </>
+    </div>
   ),
 })

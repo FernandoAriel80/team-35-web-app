@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 
 function Footer() {
   return (
-    <footer className='bg-gray-100 py-6 text-sm text-gray-600 mx-auto flex flex-col items-center space-y-2'>
+    <footer className='bg-gray-100 py-6 text-sm text-gray-600 flex flex-col items-center space-y-2'>
       <div className='w-full flex justify-center gap-5 sm:gap-10 px-3 text-center'>
         <Link
           to='/'
