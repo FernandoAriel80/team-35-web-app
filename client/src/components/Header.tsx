@@ -5,7 +5,6 @@ import { useAuth } from '../hooks/useAuth'
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { isAuthenticated, handleLogout } = useAuth()
-
   const navigate = useNavigate()
 
   const onLogout = () => {
@@ -15,7 +14,8 @@ function Header() {
 
   return (
     <header className='bg-white shadow-md sticky top-0 z-50'>
-      <nav className='container mx-auto flex items-center justify-between py-4 px-10'>
+      <nav className='container mx-auto flex items-center justify-between py-4 px-6 md:px-10'>
+        {/* Logo */}
         <Link
           to='/'
           className='flex items-center space-x-2'
@@ -24,8 +24,9 @@ function Header() {
           <span className='font-semibold text-gray-800 text-2xl'>Financia</span>
         </Link>
 
+        {/* Botón móvil */}
         <button
-          className='md:hidden text-gray-700 focus:outline-none'
+          className='lg:hidden text-gray-700 focus:outline-none transition-transform'
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label='Abrir menú'
         >
@@ -60,48 +61,36 @@ function Header() {
           )}
         </button>
 
-        <ul
-          className={`${
-            menuOpen ? 'flex' : 'hidden'
-          } absolute md:static top-16 left-0 w-full md:w-auto flex-col md:flex-row items-center md:space-x-2 bg-white md:bg-transparent border-t md:border-0 py-4 md:py-0 shadow-md md:shadow-none md:flex text-gray-700 font-medium`}
+        {/* Menú principal */}
+        <div
+          className={`
+            lg:flex lg:items-center lg:space-x-4 font-medium text-gray-700
+            absolute lg:static top-full left-0 w-full lg:w-auto bg-white border-t border-gray-200 lg:border-none shadow-md lg:shadow-none
+            overflow-hidden transition-all duration-300 ease-in-out
+            ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'}
+          `}
         >
-          <li>
-            <Link
-              to='/'
-              className='block px-4 py-2 hover:text-blue-600 transition'
-              onClick={() => setMenuOpen(false)}
-            >
-              Inicio
-            </Link>
-          </li>
-          <li>
-            <Link
-              to='/services'
-              className='block px-4 py-2 hover:text-blue-600 transition'
-              onClick={() => setMenuOpen(false)}
-            >
-              Servicios
-            </Link>
-          </li>
-          <li>
-            <Link
-              to='/about-us'
-              className='block px-4 py-2 hover:text-blue-600 transition'
-              onClick={() => setMenuOpen(false)}
-            >
-              Conócenos
-            </Link>
-          </li>
-          <li>
-            <Link
-              to='/contact'
-              className='block px-4 py-2 hover:text-blue-600 transition'
-              onClick={() => setMenuOpen(false)}
-            >
-              Contacto
-            </Link>
-          </li>
-          <div className='flex flex-col md:flex-row md:items-center gap-2 mt-4 md:mt-0'>
+          <ul className='flex flex-col lg:flex-row items-center w-full lg:w-auto'>
+            {[
+              { to: '/', label: 'Inicio' },
+              { to: '/services', label: 'Servicios' },
+              { to: '/about-us', label: 'Conócenos' },
+              { to: '/contact', label: 'Contacto' },
+            ].map(({ to, label }) => (
+              <li key={to}>
+                <Link
+                  to={to}
+                  className='block px-4 py-2 hover:text-blue-600 transition-colors'
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Botones de sesión */}
+          <div className='flex flex-col lg:flex-row lg:items-center gap-2 p-4 lg:p-0'>
             {!isAuthenticated && (
               <Link
                 to='/auth/login'
@@ -113,23 +102,23 @@ function Header() {
             )}
 
             <Link
-              to={isAuthenticated ? '/solicitar' : '/auth/login'}
+              to={isAuthenticated ? '/solicitar' : '/auth/register'}
               className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
-              Registrarse
+              {isAuthenticated ? 'Solicitar crédito' : 'Registrarse'}
             </Link>
 
             {isAuthenticated && (
               <button
-                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center hover:cursor-pointer'
+                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
                 onClick={onLogout}
               >
                 Cerrar Sesión
               </button>
             )}
           </div>
-        </ul>
+        </div>
       </nav>
     </header>
   )
