@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 
 function Header() {
@@ -12,10 +12,38 @@ function Header() {
     navigate({ to: '/' })
   }
 
+  const menuRef = useRef<HTMLUListElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false)
+      }
+    }
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('touchstart', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [menuOpen])
+
   return (
     <header className='bg-white shadow-md sticky top-0 z-50'>
       <nav className='container mx-auto flex items-center justify-between py-4 px-6 md:px-10'>
-        {/* Logo */}
         <Link
           to='/'
           className='flex items-center space-x-2'
@@ -24,8 +52,8 @@ function Header() {
           <span className='font-semibold text-gray-800 text-2xl'>Financia</span>
         </Link>
 
-        {/* Botón móvil */}
         <button
+          ref={buttonRef}
           className='lg:hidden text-gray-700 focus:outline-none transition-transform'
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label='Abrir menú'
@@ -61,16 +89,18 @@ function Header() {
           )}
         </button>
 
-        {/* Menú principal */}
         <div
           className={`
-            lg:flex lg:items-center lg:space-x-4 font-medium text-gray-700
-            absolute lg:static top-full left-0 w-full lg:w-auto bg-white border-t border-gray-200 lg:border-none shadow-md lg:shadow-none
+            flex flex-col lg:flex-row items-center font-medium text-gray-700
+            absolute lg:static top-full right-0 w-full lg:w-auto bg-slate-100/80 backdrop-blur-md border-t border-gray-200 lg:border-none shadow-md lg:shadow-none
             overflow-hidden transition-all duration-300 ease-in-out
             ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'}
           `}
         >
-          <ul className='flex flex-col lg:flex-row items-center w-full lg:w-auto'>
+          <ul
+            ref={menuRef}
+            className='flex flex-col lg:flex-row items-center w-full lg:w-auto'
+          >
             {[
               { to: '/', label: 'Inicio' },
               { to: '/services', label: 'Servicios' },
@@ -89,8 +119,7 @@ function Header() {
             ))}
           </ul>
 
-          {/* Botones de sesión */}
-          <div className='flex flex-col lg:flex-row lg:items-center gap-2 p-4 lg:p-0'>
+          <div className='flex flex-col lg:flex-row lg:items-center w-fit gap-2 p-4 lg:p-0'>
             {!isAuthenticated && (
               <Link
                 to='/auth/login'
