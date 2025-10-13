@@ -7,7 +7,7 @@ export const Route = createFileRoute('/')({
 function RouteComponent() {
   return (
     <main>
-      <section className='bg-gray-800 text-center text-white py-24 px-4'>
+      <section className='bg-gray-800 text-center text-white py-12 px-4'>
         <h1 className='text-4xl md:text-5xl font-bold mb-4'>
           Financiación Rápida y Simplificada para tu PYME
         </h1>
@@ -19,7 +19,7 @@ function RouteComponent() {
           Solicita tu Crédito Ahora
         </button>
       </section>
-      <section className='py-16 bg-gray-50'>
+      <section className='py-12'>
         <div className='container mx-auto px-6 text-center'>
           <h2 className='text-2xl font-bold text-gray-800 mb-4'>
             Beneficios Clave de Financia
@@ -63,7 +63,7 @@ function RouteComponent() {
           </div>
         </div>
       </section>
-      <section className='bg-gray-800 text-center text-white py-20'>
+      <section className='bg-gray-800 text-center text-white py-12'>
         <h2 className='text-2xl font-bold mb-4'>
           ¿Listo para Impulsar tu Negocio?
         </h2>
