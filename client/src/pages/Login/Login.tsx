@@ -37,13 +37,13 @@ export const Login = () => {
   const errorMessages = Object.values(errors).map(({ message }) => message)
 
   return (
-    <section className='w-full flex justify-center relative'>
+    <section className='flex flex-1 items-center justify-center bg-slate-200'>
       <form
         onSubmit={(e) => {
           e.preventDefault()
           handleSubmit(onSubmit)()
         }}
-        className='w-full max-w-[22rem] h-fit mt-20 bg-slate-100 rounded-xl flex flex-col items-center p-8 border border-slate-200 shadow'
+        className='w-full max-w-[22rem] h-fit bg-slate-100 rounded-xl flex flex-col items-center p-8 border border-slate-200 shadow'
       >
         <header className='text-center mb-6'>
           <h1 className='font-bold text-2xl'>Bienvenido a Financia</h1>
