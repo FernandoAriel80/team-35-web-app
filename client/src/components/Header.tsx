@@ -92,7 +92,7 @@ function Header() {
         <div
           className={`
             flex flex-col lg:flex-row items-center font-medium text-gray-700
-            absolute lg:static top-full right-0 w-full lg:w-auto bg-slate-100/80 backdrop-blur-md border-t border-gray-200 lg:border-none shadow-md lg:shadow-none
+            absolute lg:static top-full right-0 w-full lg:w-auto bg-slate-100/80 lg:bg-transparent backdrop-blur-md border-t border-gray-200 lg:border-none shadow-md lg:shadow-none
             overflow-hidden transition-all duration-300 ease-in-out
             ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'}
           `}
