@@ -43,9 +43,9 @@ export const useAuth = () => {
     }
 
     try {
-      const { user, new_access_token: newToken } = await validateTokenService(token)
+      const { user, access_token } = await validateTokenService(token)
 
-      window.localStorage.setItem('token', newToken)
+      window.localStorage.setItem('token', access_token)
 
       signIn(user)
     } catch (error) {
