@@ -1,11 +1,11 @@
 import type { ErrorResponse, LoginInput, LoginResponse, RegisterInput, RegisterResponse, ValidateTokenResponse } from "../interfaces/auth.interface"
 
-const BASE_URL = 'http://localhost:3000/auth'
+const BASE_URL = 'http://localhost:3000'
 
 export const registerService = async (data: RegisterInput): Promise<RegisterResponse> => {
   try {
 
-    const response = await fetch(`${BASE_URL}/register`, {
+    const response = await fetch(`${BASE_URL}/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ export const registerService = async (data: RegisterInput): Promise<RegisterResp
 export const loginService = async (data: LoginInput): Promise<LoginResponse> => {
   try {
 
-    const response = await fetch(`${BASE_URL}/login`, {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ export const loginService = async (data: LoginInput): Promise<LoginResponse> => 
 export const validateTokenService = async (token: string): Promise<ValidateTokenResponse> => {
   try {
 
-    const response = await fetch(`${BASE_URL}/validate-token`, {
+    const response = await fetch(`${BASE_URL}/auth/validate-token`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
