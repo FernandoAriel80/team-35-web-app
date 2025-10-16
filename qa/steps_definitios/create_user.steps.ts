@@ -10,7 +10,7 @@ Given(
 )
 
 When(
-  'el usuario ingresa {string} en el campo nombre de empresa',
+  'el usuario ingresa {string} en el campo nombre completo',
   async function (this: PlaywrightWorld, name: string) {
     await this.createUserPage.fillName(name)
   }
@@ -41,41 +41,62 @@ When(
 )
 
 When(
-  'acepta los términos y condiciones',
-  async function (this: PlaywrightWorld) {
-    await this.createUserPage.checkCheckbox(this.createUserPage.termsCheck)
-  }
-)
-
-When(
-  'no acepta los términos y condiciones',
-  async function (this: PlaywrightWorld) {
-    await this.page.uncheck(this.createUserPage.termsCheck)
-  }
-)
-
-When(
   'hace click en el botón de registrarse',
   async function (this: PlaywrightWorld) {
     await this.createUserPage.submitForm()
   }
 )
 
+Then(
+  'se debe mostrar un mensaje {string}',
+  async function (this: PlaywrightWorld, message: string) {
+    const successAlert = this.page.locator('.toast', { hasText: message })
+    await expect(successAlert).toBeVisible({ timeout: 5000 })
+    await expect(successAlert).toContainText(message)
+  }
+)
+
 When(
   'el usuario no ingresa ningún dato',
   async function (this: PlaywrightWorld) {
-    // No hace nada: simula formulario vacío
+    await this.createUserPage.submitForm()
   }
 )
 
 Then(
-  'se deben mostrar mensajes de error indicando campos requeridos',
+  'no permite enviar registro con campos vacíos',
   async function (this: PlaywrightWorld) {
-    const requiredMessages = this.page.locator('.error, .validation-message')
-    await expect(requiredMessages.first()).toBeVisible()
-    await expect(requiredMessages).toContainText(['requerido', 'obligatorio'])
+    await expect(this.page).toHaveURL('auth/register')
   }
 )
+
+/* 
+
+  Scenario: Intento de registro con email inválido
+    When el usuario ingresa "Juán Perez" en el campo nombre completo
+    And el usuario ingresa "correo-invalido" en el campo email
+    And el usuario ingresa "<password>" en el campo contraseña
+    And el usuario confirma "<password>" en el campo confirmar contraseña
+    And hace click en el botón de registrarse
+    Then se debe mostrar un mensaje de error "Formato de email inválido"
+
+  Scenario: Intento de registro con contraseñas no coincidentes
+    When el usuario ingresa "Juán Perez" en el campo nombre completo
+    And  el usuario ingresa "correo@correo.com" en el campo email
+    And el usuario ingresa "<password>" en el campo contraseña
+    And el usuario confirma "Password456!" en el campo confirmar contraseña
+    And hace click en el botón de registrarse
+    Then se debe mostrar un mensaje de error "Las contraseñas no coinciden"
+
+  Scenario: Intento de registro con email ya registrado
+    When el usuario ingresa "Juán Pere" en el campo nombre completo
+    And el usuario ingresa "<email>" en el campo email
+    And el usuario ingresa "<password>" en el campo contraseña
+    And el usuario confirma "<password>" en el campo confirmar contraseña
+    And hace click en el botón de registrarse
+    Then se debe mostrar un mensaje de error "El email ya está registrado"
+
+*/
 
 Then(
   'se debe mostrar un mensaje de error {string}',
@@ -85,24 +106,5 @@ Then(
     )
     await expect(errorAlert).toBeVisible()
     await expect(errorAlert).toContainText(message)
-  }
-)
-
-Then(
-  'se debe mostrar un mensaje {string}',
-  async function (this: PlaywrightWorld, message: string) {
-    const successAlert = this.page.locator(
-      '.alert-success, .notification, .toast'
-    )
-    await expect(successAlert).toBeVisible()
-    await expect(successAlert).toContainText(message)
-  }
-)
-
-Then(
-  'se debe mostrar el dashboard del sistema',
-  async function (this: PlaywrightWorld) {
-    await expect(this.page).toHaveURL(/.*dashboard/)
-    await expect(this.page.locator('h1')).toContainText('Dashboard')
   }
 )

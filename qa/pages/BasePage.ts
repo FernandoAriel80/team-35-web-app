@@ -19,6 +19,10 @@ export class BasePage {
     await this.page.click(selector)
   }
 
+  async getMessage(selector: string) {
+    return this.page.textContent(selector)
+  }
+
   async checkCheckbox(selector: string) {
     await this.page.check(selector)
   }
