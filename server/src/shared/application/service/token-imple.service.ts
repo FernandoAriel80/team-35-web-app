@@ -12,23 +12,20 @@ import { TokenService } from 'src/shared/domain/service/toker.service'
 @Injectable()
 export class TokenImplService implements TokenService {
   constructor(
-    private readonly jwtService: JwtService, // ← Ya configurado con JwtModule.register()
+    private readonly jwtService: JwtService,
     @Inject(USER_REPOSITORY)
     private userRepository: UserRepository,
   ) {}
 
   async createToken(payload: UserPayloadDto): Promise<string> {
-    // SOLUCIÓN: Usa la configuración del módulo, no pases secret/expiresIn
     return await this.jwtService.signAsync(payload)
   }
 
   async validateAndRenewToken(token: string): Promise<TokenResponseDto> {
-    // SOLUCIÓN: Usa verify sin pasar secret
     const payload = await this.jwtService.verifyAsync<JwtPayloadDto>(token)
 
     if (!payload) throw new UnauthorizedException('Token is invalid')
 
-    // Obtener datos completos del usuario desde la base de datos
     const user = await this.userRepository.findByEmail(payload.email)
     if (!user) throw new UnauthorizedException('User not found')
 
