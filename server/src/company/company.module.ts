@@ -5,6 +5,8 @@ import { CompanyPgRepository } from './infraestructure/repository/company-pg.rep
 import { CompanyController } from './infraestructure/controller/company.controller'
 import { CREATE_COMPANY_USECASE } from './domain/usecase/create-company.usecase'
 import { CreateCompanyImplUseCase } from './application/usecase/create-company-impl.usecase'
+import { GetAllCompanyByUserImplUseCase } from './application/usecase/get-all-company-by-user-impl.usecase'
+import { GET_ALL_COMPANY_BY_USER_USECASE } from './domain/usecase/get-all-company-by-user.usecase'
 
 @Module({
   imports: [PrismaModule],
@@ -16,6 +18,10 @@ import { CreateCompanyImplUseCase } from './application/usecase/create-company-i
     {
       provide: CREATE_COMPANY_USECASE,
       useClass: CreateCompanyImplUseCase,
+    },
+    {
+      provide: GET_ALL_COMPANY_BY_USER_USECASE,
+      useClass: GetAllCompanyByUserImplUseCase,
     },
   ],
   controllers: [CompanyController],
