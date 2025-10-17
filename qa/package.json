@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "types": "module",
   "scripts": {
-    "test": "cucumber-js --require-module ts-node/register --require ./steps/**/*.ts --publish-quiet"
+    "test": "cucumber-js"
   },
   "repository": {
     "type": "git",
@@ -20,12 +21,10 @@
   "homepage": "https://github.com/Lopezandres07/qa-onboarding-credits#readme",
   "devDependencies": {
     "@cucumber/cucumber": "^12.2.0",
+    "@playwright/test": "^1.56.1",
     "dotenv": "^17.2.3",
     "playwright": "^1.55.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@playwright/test": "^1.55.1"
   }
 }

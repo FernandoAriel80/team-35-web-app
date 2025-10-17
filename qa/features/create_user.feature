@@ -27,7 +27,7 @@ Feature: Registro de usuario
     And el usuario ingresa "<password>" en el campo contraseña
     And el usuario confirma "<password>" en el campo confirmar contraseña
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "El formato del correo electrónico no es válido"
+    Then se debe mostrar un mensaje "El formato del correo electrónico no es válido"
 
   Scenario: Intento de registro con contraseñas no coincidentes
     When el usuario ingresa "Juán Perez" en el campo nombre completo
@@ -35,7 +35,7 @@ Feature: Registro de usuario
     And el usuario ingresa "<password>" en el campo contraseña
     And el usuario confirma "Password456!" en el campo confirmar contraseña
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "La contraseñas deben ser iguales"
+    Then se debe mostrar un mensaje "La contraseñas deben ser iguales"
 
   Scenario: Intento de registro con email ya registrado
     When el usuario ingresa "Juán Perez" en el campo nombre completo
@@ -43,4 +43,4 @@ Feature: Registro de usuario
     And el usuario ingresa "<password>" en el campo contraseña
     And el usuario confirma "<password>" en el campo confirmar contraseña
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "El email ya está registrado"
+    Then se debe mostrar un mensaje "Email already registered"

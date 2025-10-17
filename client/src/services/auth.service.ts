@@ -9,8 +9,9 @@ import type {
 
 const URL = import.meta.env.VITE_BASE_URL
 const PORT = import.meta.env.VITE_PORT
+const API_URL = import.meta.env.VITE_API_URL
 
-const BASE_URL = URL + PORT
+const BASE_URL = API_URL || URL + PORT
 
 export const registerService = async (
   data: RegisterInput

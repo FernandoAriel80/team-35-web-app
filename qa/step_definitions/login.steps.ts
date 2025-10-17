@@ -5,7 +5,7 @@ import { PlaywrightWorld } from '../support/world'
 Given(
   'el usuario esta previamente registrado y en la página de login',
   async function (this: PlaywrightWorld) {
-    await this.loginPage.navigate(this.baseURL + '/login')
+    await this.loginPage.navigate(`${this.baseURL}/auth/login`)
   }
 )
 
