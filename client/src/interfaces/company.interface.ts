@@ -1,4 +1,5 @@
 export interface Company {
+  id: number
   name: string
   type: string
   taxId: string
