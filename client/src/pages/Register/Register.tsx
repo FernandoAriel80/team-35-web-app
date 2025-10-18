@@ -10,7 +10,7 @@ import { useAuth } from '../../hooks/useAuth'
 import toast from 'react-hot-toast'
 
 export const Register = () => {
-  const { handleRegister } = useAuth()
+  const { onRegister } = useAuth()
   const {
     register,
     handleSubmit,
@@ -21,7 +21,7 @@ export const Register = () => {
 
   const onSubmit = async (data: RegisterFormValues) => {
     toast.promise(
-      handleRegister(data).then(async () => {
+      onRegister(data).then(async () => {
         await navigate({ to: '/' })
       }),
       {

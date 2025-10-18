@@ -9,7 +9,7 @@ export const useAuth = () => {
   const signIn = useBoundStore((state) => state.signIn)
   const signOut = useBoundStore((state) => state.signOut)
 
-  const handleRegister = async (data: RegisterInput) => {
+  const onRegister = async (data: RegisterInput) => {
     try {
       const { user, access_token: token } = await registerService(data)
 
@@ -20,7 +20,7 @@ export const useAuth = () => {
     }
   }
 
-  const handleLogin = async (data: LoginInput) => {
+  const onLogin = async (data: LoginInput) => {
 
     try {
       const { user, access_token: token } = await loginService(data)
@@ -33,7 +33,7 @@ export const useAuth = () => {
     }
   }
 
-  const handleValidateToken = async () => {
+  const onValidateToken = async () => {
 
     const token = window.localStorage.getItem('token')
 
@@ -53,18 +53,18 @@ export const useAuth = () => {
     }
   }
 
-  const handleLogout = () => {
+  const onLogout = () => {
     window.localStorage.removeItem('token')
     signOut()
   }
 
   return {
-    handleRegister,
-    handleLogin,
-    handleValidateToken,
+    onRegister,
+    onLogin,
+    onValidateToken,
+    onLogout,
     status,
     isAuthenticated: status === 'AUTHENTICATED',
     user,
-    handleLogout
   }
 }
