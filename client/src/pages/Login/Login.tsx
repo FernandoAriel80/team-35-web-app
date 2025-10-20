@@ -12,7 +12,7 @@ import type { LoginInput } from '../../interfaces/auth.interface'
 import { type LoginFormValues, invoiceSchema } from './login.schema'
 
 export const Login = () => {
-  const { handleLogin } = useAuth()
+  const { onLogin } = useAuth()
   const {
     register,
     handleSubmit,
@@ -23,7 +23,7 @@ export const Login = () => {
 
   const onSubmit = async (data: LoginInput) => {
     toast.promise(
-      handleLogin(data).then(async () => {
+      onLogin(data).then(async () => {
         await navigate({ to: '/' })
       }),
       {

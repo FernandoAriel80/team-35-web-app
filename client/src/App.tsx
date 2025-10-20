@@ -7,7 +7,7 @@ import { useAuth } from "./hooks/useAuth"
 import Spinner from "./components/Spinner"
 
 function App() {
-  const { user, status, isAuthenticated, handleValidateToken } = useAuth()
+  const { user, status, isAuthenticated, onValidateToken } = useAuth()
 
   const authContext = {
     user,
@@ -16,7 +16,7 @@ function App() {
   }
 
   useEffect(() => {
-    handleValidateToken()
+    onValidateToken()
       .then()
   }, [])
 
