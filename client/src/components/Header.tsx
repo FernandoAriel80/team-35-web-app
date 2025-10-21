@@ -1,14 +1,16 @@
-import { Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
+
+import { Link, useNavigate } from '@tanstack/react-router'
+
 import { useAuth } from '../hooks/useAuth'
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { isAuthenticated, handleLogout } = useAuth()
+  const { isAuthenticated, onLogout } = useAuth()
   const navigate = useNavigate()
 
-  const onLogout = () => {
-    handleLogout()
+  const handleLogout = () => {
+    onLogout()
     navigate({ to: '/' })
   }
 
@@ -141,7 +143,7 @@ function Header() {
             {isAuthenticated && (
               <button
                 className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
-                onClick={onLogout}
+                onClick={handleLogout}
               >
                 Cerrar Sesión
               </button>
