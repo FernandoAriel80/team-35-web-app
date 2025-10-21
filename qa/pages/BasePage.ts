@@ -7,6 +7,9 @@ export class BasePage {
     this.page = page
   }
 
+  errorMessage = '[data-test="form-message"]'
+  toastMessage = 'div[role="status"]'
+
   async navigate(url: string) {
     await this.page.goto(url)
   }
@@ -19,15 +22,33 @@ export class BasePage {
     await this.page.click(selector)
   }
 
-  async getMessage(selector: string) {
-    return this.page.textContent(selector)
-  }
-
   async checkCheckbox(selector: string) {
     await this.page.check(selector)
   }
 
   async uploadFile(selector: string, path: string) {
     await this.page.setInputFiles(selector, path)
+  }
+
+  async getFormMessage() {
+    const errorLocator = this.page.locator(this.errorMessage)
+    const toastLocator = this.page.locator(this.toastMessage)
+
+    const firstVisible = await Promise.race([
+      errorLocator
+        .waitFor({ state: 'visible', timeout: 15000 })
+        .then(() => errorLocator)
+        .catch(() => null),
+      toastLocator
+        .waitFor({ state: 'visible', timeout: 15000 })
+        .then(() => toastLocator)
+        .catch(() => null),
+    ])
+
+    if (!firstVisible) {
+      throw new Error('No se encontró mensaje de error ni toast en pantalla')
+    }
+
+    return firstVisible
   }
 }

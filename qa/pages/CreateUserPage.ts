@@ -23,10 +23,6 @@ export class CreateUserPage extends BasePage {
     await this.fillInput(this.confirmPaswwordInput, password)
   }
 
-  async getAnyMessage() {
-    return this.getMessage('p, div[role="status"] b')
-  }
-
   async submitForm() {
     await this.clickButton(this.submitButton)
   }

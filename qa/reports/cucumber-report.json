@@ -1,0 +1,1179 @@
+[
+  {
+    "description": "  Como nuevo usuario quiero registrarme en la plataforma\n  Para poder iniciar sesión y solicitar un crédito",
+    "elements": [
+      {
+        "description": "",
+        "id": "registro-de-usuario;registro-exitoso-con-todos-los-datos-válidos",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Registro exitoso con todos los datos válidos",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1024272300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "el usuario se encuentra en la página de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 203441899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "el usuario ingresa \"Juan Perez\" en el campo nombre completo de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 157580200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "el usuario ingresa \"<email>\" en el campo email de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10748999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "el usuario ingresa \"<password>\" en el campo contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 13804100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "el usuario confirma \"<password>\" en el campo confirmar contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9118399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "hace click en el botón de registrarse",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 51062700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "se debe mostrar un mensaje \"Bienvenid@\"",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:50"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3967469499
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 353714400
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@register",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "registro-de-usuario;intento-de-registro-con-campos-vacíos",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Intento de registro con campos vacíos",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 808971499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "el usuario se encuentra en la página de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 152389200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 19,
+            "name": "el usuario no ingresa ningún dato",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 121827699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "hace click en el botón de registrarse",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 48679100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "no permite enviar registro con campos vacíos",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:66"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4248000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 324050499
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@register",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "registro-de-usuario;intento-de-registro-con-email-inválido",
+        "keyword": "Scenario",
+        "line": 23,
+        "name": "Intento de registro con email inválido",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 880313099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "el usuario se encuentra en la página de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 160663299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 24,
+            "name": "el usuario ingresa \"Juan Perez\" en el campo nombre completo de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 86346600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "el usuario ingresa \"correo-invalido@correo\" en el campo email de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10411800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "el usuario ingresa \"<password>\" en el campo contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9037700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "el usuario confirma \"<password>\" en el campo confirmar contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5950999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "hace click en el botón de registrarse",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 52912599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "se debe mostrar un mensaje \"El formato del correo electrónico no es válido\"",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:50"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17923099
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 341235199
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@register",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "registro-de-usuario;intento-de-registro-con-contraseñas-no-coincidentes",
+        "keyword": "Scenario",
+        "line": 31,
+        "name": "Intento de registro con contraseñas no coincidentes",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 862548299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "el usuario se encuentra en la página de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 171745999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 32,
+            "name": "el usuario ingresa \"Juan Perez\" en el campo nombre completo de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 85698799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 33,
+            "name": "el usuario ingresa \"correo@correo.com\" en el campo email de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9530500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 34,
+            "name": "el usuario ingresa \"<password>\" en el campo contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9420099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 35,
+            "name": "el usuario confirma \"Password456!\" en el campo confirmar contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6478100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "hace click en el botón de registrarse",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 37955200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 37,
+            "name": "se debe mostrar un mensaje \"La contraseñas deben ser iguales\"",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:50"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12345800
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 319660299
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@register",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "registro-de-usuario;intento-de-registro-con-email-ya-registrado",
+        "keyword": "Scenario",
+        "line": 39,
+        "name": "Intento de registro con email ya registrado",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 838241399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "el usuario se encuentra en la página de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 153844700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 40,
+            "name": "el usuario ingresa \"Juan Perez\" en el campo nombre completo de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 87932899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 41,
+            "name": "el usuario ingresa \"<email>\" en el campo email de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9870600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 42,
+            "name": "el usuario ingresa \"<password>\" en el campo contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5477100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 43,
+            "name": "el usuario confirma \"<password>\" en el campo confirmar contraseña de registro",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6310400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 44,
+            "name": "hace click en el botón de registrarse",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 53166200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 45,
+            "name": "se debe mostrar un mensaje \"Email already registered\"",
+            "match": {
+              "location": "step_definitions\\create_user.steps.ts:50"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 892960900
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 419080099
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@register",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "registro-de-usuario",
+    "line": 3,
+    "keyword": "Feature",
+    "name": "Registro de usuario",
+    "tags": [
+      {
+        "name": "@register",
+        "line": 1
+      }
+    ],
+    "uri": "features\\create_user.feature"
+  },
+  {
+    "description": "    Como usuario ya registrado quiero iniciar sesion para ingresar al sistema",
+    "elements": [
+      {
+        "description": "",
+        "id": "servicio-de-login;intento-de-ingreso-con-credenciales-válidas",
+        "keyword": "Scenario",
+        "line": 8,
+        "name": "Intento de ingreso con credenciales válidas",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 850059600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "el usuario esta previamente registrado y en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 171745699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "el usuario ingresa \"<email>\" en el campo email del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 80759999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "el usuario ingresa \"<password>\" en el campo contraseña del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9962700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "hace click en el boton de iniciar sesión",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 55278800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "se debe mostrar una notificación \"Bienvenid@\"",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1910678500
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 351997600
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "servicio-de-login;intento-de-ingreso-con-campos-vacíos",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Intento de ingreso con campos vacíos",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 867859400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "el usuario esta previamente registrado y en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 171153900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "el usuario no ingresa ningún dato en el login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:44"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 126021600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "algún campo vacio debe ser inválido",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 33224600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "se mantiene en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:71"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3043700
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 278626700
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "servicio-de-login;intento-de-ingreso-con-campo-vacio-de-email",
+        "keyword": "Scenario",
+        "line": 19,
+        "name": "Intento de ingreso con campo vacio de email",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 980242299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "el usuario esta previamente registrado y en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 206262899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "el usuario ingresa \"\" en el campo email del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 103623899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "el usuario ingresa \"Tester\" en el campo contraseña del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 13072099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 22,
+            "name": "algún campo vacio debe ser inválido",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 35639499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "se mantiene en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:71"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3165000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 347747300
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "servicio-de-login;intento-de-ingreso-con-campo-vacio-de-contraseña",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Intento de ingreso con campo vacio de contraseña",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 861677999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "el usuario esta previamente registrado y en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 150396099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "el usuario ingresa \"correo@correo.com\" en el campo email del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 88584499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "el usuario ingresa \"\" en el campo contraseña del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10459700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 28,
+            "name": "algún campo vacio debe ser inválido",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:51"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22742599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "se mantiene en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:71"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6232100
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 298477800
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "servicio-de-login;intento-de-ingreso-con-email-incorrecto",
+        "keyword": "Scenario",
+        "line": 31,
+        "name": "Intento de ingreso con email incorrecto",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 860220400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "el usuario esta previamente registrado y en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 155955200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 32,
+            "name": "el usuario ingresa \"correo-incorrecto@correo.com\" en el campo email del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 89304499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 33,
+            "name": "el usuario ingresa \"<password>\" en el campo contraseña del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10837100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 34,
+            "name": "hace click en el boton de iniciar sesión",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 51617700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "se debe mostrar una notificación \"Email is incorrect\"",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 894312599
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 414722499
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "servicio-de-login;intento-de-ingreso-con-clave-incorrecta",
+        "keyword": "Scenario",
+        "line": 37,
+        "name": "Intento de ingreso con clave incorrecta",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1348529599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "el usuario esta previamente registrado y en la página de login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 169514900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 38,
+            "name": "el usuario ingresa \"<email>\" en el campo email del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 103590100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 39,
+            "name": "el usuario ingresa \"Password456!\" en el campo contraseña del login",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7783800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 40,
+            "name": "hace click en el boton de iniciar sesión",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 64159899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 41,
+            "name": "se debe mostrar una notificación \"Password is incorrect\"",
+            "match": {
+              "location": "step_definitions\\login.steps.ts:35"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 908813300
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 359234799
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "servicio-de-login",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Servicio de login",
+    "tags": [
+      {
+        "name": "@login",
+        "line": 1
+      }
+    ],
+    "uri": "features\\login.feature"
+  }
+]

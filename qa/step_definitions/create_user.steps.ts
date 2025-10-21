@@ -10,14 +10,14 @@ Given(
 )
 
 When(
-  'el usuario ingresa {string} en el campo nombre completo',
+  'el usuario ingresa {string} en el campo nombre completo de registro',
   async function (this: PlaywrightWorld, name: string) {
     await this.createUserPage.fillName(name)
   }
 )
 
 When(
-  'el usuario ingresa {string} en el campo email',
+  'el usuario ingresa {string} en el campo email de registro',
   async function (this: PlaywrightWorld, email: string) {
     if (email === '<email>') email = this.email
     await this.createUserPage.fillEmail(email)
@@ -25,7 +25,7 @@ When(
 )
 
 When(
-  'el usuario ingresa {string} en el campo contraseña',
+  'el usuario ingresa {string} en el campo contraseña de registro',
   async function (this: PlaywrightWorld, password: string) {
     if (password === '<password>') password = this.password
     await this.createUserPage.fillPassword(password)
@@ -33,7 +33,7 @@ When(
 )
 
 When(
-  'el usuario confirma {string} en el campo confirmar contraseña',
+  'el usuario confirma {string} en el campo confirmar contraseña de registro',
   async function (this: PlaywrightWorld, password: string) {
     if (password === '<password>') password = this.password
     await this.createUserPage.fillConfirmedPassword(password)
@@ -50,8 +50,9 @@ When(
 Then(
   'se debe mostrar un mensaje {string}',
   async function (this: PlaywrightWorld, expectedMessage: string) {
-    const message = await this.createUserPage.getAnyMessage()
-    expect(message?.trim()).toContain(expectedMessage)
+    const messageLocator = await this.createUserPage.getFormMessage()
+    await messageLocator.waitFor({ state: 'visible', timeout: 10000 })
+    await expect(messageLocator).toHaveText(new RegExp(expectedMessage, 'i'))
   }
 )
 
