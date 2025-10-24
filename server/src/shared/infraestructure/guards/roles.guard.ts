@@ -1,34 +1,47 @@
 import {
+  Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-  Injectable,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { ROLES_KEY } from '../decorators/roles.decorator'
+import { Request } from 'express'
 import { UserRole } from 'src/shared/domain/enums/user-role.enum'
+import { ROLES_KEY } from '../decorators/roles.decorator'
 import { JwtPayloadGuardDto } from 'src/shared/domain/dto/jwt-payload-guard.dto'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<UserRole>(
+    // 1️⃣ Obtener los roles requeridos desde el decorador
+    const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     )
-    if (!requiredRoles) return true
 
-    const user = context.switchToHttp().getRequest<JwtPayloadGuardDto>()
+    // 2️⃣ Si no se requieren roles, se permite el acceso
+    if (!requiredRoles || requiredRoles.length === 0) return true
+
+    // 3️⃣ Obtener el usuario desde el request
+    const request = context.switchToHttp().getRequest<Request>()
+
+    console.log('[RolesGuard] req.user:', request.user)
+    console.log('[RolesGuard] required roles:', requiredRoles)
+    const user = request.user as JwtPayloadGuardDto | undefined
 
     if (!user) {
       throw new ForbiddenException('User not authenticated')
     }
-    if (!requiredRoles.includes(user.role)) {
+
+    // 4️⃣ Validar si el usuario tiene alguno de los roles requeridos
+    const hasRole = requiredRoles.includes(user.role)
+    if (!hasRole) {
       throw new ForbiddenException('Insufficient role permissions')
     }
 
+    // 5️⃣ Autorizado ✅
     return true
   }
 }

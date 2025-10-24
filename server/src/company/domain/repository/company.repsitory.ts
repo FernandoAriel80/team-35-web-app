@@ -6,6 +6,8 @@ export const COMPANY_REPOSITORY = 'COMPANY_REPOSITORY'
 export interface CompanyRepository {
   all(): Promise<CompanyDbResponseDto[] | null>
 
+  findById(id: number): Promise<CompanyDbResponseDto | null>
+
   findAllByUserId(userid: number): Promise<CompanyDbResponseDto[] | null>
 
   findByTaxId(taxId: string): Promise<CompanyDbResponseDto | null>
@@ -15,7 +17,11 @@ export interface CompanyRepository {
     data: CreateCompanyRequestDto,
   ): Promise<CompanyDbResponseDto | null>
 
-  update(data: UpdateCompanyRequestDto): Promise<CompanyDbResponseDto | null>
+  update(
+    userId: number,
+    companyId: number,
+    data: UpdateCompanyRequestDto,
+  ): Promise<CompanyDbResponseDto | null>
 
-  destroy(id: number): Promise<CompanyDbResponseDto | null>
+  delete(id: number): Promise<CompanyDbResponseDto | null>
 }

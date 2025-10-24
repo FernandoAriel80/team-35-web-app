@@ -12,6 +12,11 @@ export class CompanyPgRepository implements CompanyRepository {
   async all(): Promise<CompanyDbResponseDto[] | null> {
     return await this.prisma.company.findMany()
   }
+  async findById(id: number): Promise<CompanyDbResponseDto | null> {
+    return await this.prisma.company.findFirst({
+      where: { id: id },
+    })
+  }
 
   async findAllByUserId(
     userid: number,
@@ -40,17 +45,22 @@ export class CompanyPgRepository implements CompanyRepository {
   }
 
   async update(
+    userId: number,
+    companyId: number,
     data: UpdateCompanyRequestDto,
   ): Promise<CompanyDbResponseDto | null> {
     return await this.prisma.company.update({
       where: {
-        id: data.id,
+        id: companyId,
       },
-      data: data,
+      data: {
+        ...data,
+        userId: userId,
+      },
     })
   }
 
-  async destroy(id: number): Promise<CompanyDbResponseDto | null> {
+  async delete(id: number): Promise<CompanyDbResponseDto | null> {
     return await this.prisma.company.delete({
       where: {
         id: id,

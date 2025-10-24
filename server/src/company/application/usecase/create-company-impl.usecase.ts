@@ -15,9 +15,9 @@ export class CreateCompanyImplUseCase implements CreateCompanyUseCase {
     userId: number,
     data: CreateCompanyRequestDto,
   ): Promise<CompanyDbResponseDto> {
-    const companyExisting = await this.companyRepository.findByTaxId(data.taxId)
+    /* const companyExisting = await this.companyRepository.findByTaxId(data.taxId)
     if (companyExisting)
-      throw new ConflictException('There is already a company with this RFC')
+      throw new ConflictException('There is already a company with this RFC') */
 
     const company = await this.companyRepository.create(userId, data)
     if (!company) throw new ConflictException('Error to create company')
