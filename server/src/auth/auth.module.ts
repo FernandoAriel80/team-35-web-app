@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { AuthController } from './infraestructure/controller/auth.controller'
 import { LOGOUT_AUTH_USE_CASE } from './domain/usecase/logout-auth.usecase'
 import { LogoutAuthImplUseCase } from './application/usecase/logout-auth-impl.usecase'
@@ -16,6 +16,7 @@ import { UserPgRepository } from 'src/users/infraestructure/repository/user-pg.r
 import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from 'src/shared/infraestructure/strategies/jwt.strategy'
 
+@Global()
 @Module({
   imports: [SharedModule, PassportModule],
   providers: [

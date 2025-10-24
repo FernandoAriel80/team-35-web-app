@@ -11,6 +11,8 @@ import { UserPgRepository } from 'src/users/infraestructure/repository/user-pg.r
 import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from './infraestructure/strategies/jwt.strategy'
 import { JwtAuthGuard } from './infraestructure/guards/jwt-auth.guard'
+import { RolesGuard } from './infraestructure/guards/roles.guard'
+import { APP_GUARD } from '@nestjs/core'
 
 @Global()
 @Module({
@@ -24,8 +26,8 @@ import { JwtAuthGuard } from './infraestructure/guards/jwt-auth.guard'
     }),
   ],
   providers: [
-    JwtStrategy, // ← Agrega la estrategia como provider
-    JwtAuthGuard, // ← Agrega el guard como provider (opcional)
+    JwtStrategy,
+    JwtAuthGuard,
     {
       provide: USER_REPOSITORY,
       useClass: UserPgRepository,
@@ -37,6 +39,10 @@ import { JwtAuthGuard } from './infraestructure/guards/jwt-auth.guard'
     {
       provide: TOKEN_SERVICE,
       useClass: TokenImplService,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
   exports: [
