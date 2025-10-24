@@ -7,9 +7,9 @@ import {
   Browser,
   BrowserContext,
   Page,
-} from 'playwright'
-import { LoginPage } from '../pages/LoginPage'
+} from '@playwright/test'
 import { CreateUserPage } from '../pages/CreateUserPage'
+import { LoginPage } from '../pages/LoginPage'
 // import { CreditApplicationPage } from '../pages/CreditApplicationPage'
 // import { DocumentUploadPage } from '../pages/DocumentUploadPage'
 // import { DigitalSignaturePage } from '../pages/DigitalSignaturePage'
@@ -22,8 +22,8 @@ export class PlaywrightWorld extends World {
   page!: Page
 
   // Page Objects
-  loginPage!: LoginPage
   createUserPage!: CreateUserPage
+  loginPage!: LoginPage
   // creditApplicationPage!: CreditApplicationPage
   // documentUploadPage!: DocumentUploadPage
   // digitalSignaturePage!: DigitalSignaturePage
@@ -31,7 +31,7 @@ export class PlaywrightWorld extends World {
   // Configuración desde variables de entorno
   browserName = process.env.BROWSER || 'chromium'
   headless = process.env.HEADLESS !== 'false'
-  baseURL = process.env.BASE_URL || 'http://localhost:3000' // Validar URL ⚠️
+  baseURL = process.env.LOCAL_URL || 'http://localhost:5173'
   email = process.env.TEST_USER_EMAIL || 'default_user@qa.com'
   password = process.env.TEST_USER_PASSWORD || 'Default123!'
 
@@ -53,8 +53,8 @@ export class PlaywrightWorld extends World {
     this.page.setDefaultNavigationTimeout(30000)
 
     // Instanciar Page Objects
-    this.loginPage = new LoginPage(this.page)
     this.createUserPage = new CreateUserPage(this.page)
+    this.loginPage = new LoginPage(this.page)
     // this.creditApplicationPage = new CreditApplicationPage(this.page)
     // this.documentUploadPage = new DocumentUploadPage(this.page)
     // this.digitalSignaturePage = new DigitalSignaturePage(this.page)

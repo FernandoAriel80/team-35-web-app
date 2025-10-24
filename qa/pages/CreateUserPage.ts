@@ -5,7 +5,6 @@ export class CreateUserPage extends BasePage {
   emailInput = 'input[name="email"]'
   passwordInput = 'input[name="password"]'
   confirmPaswwordInput = 'input[name="confirmPassword"]'
-  termsCheck = 'input[name="terms"]'
   submitButton = 'button[type="submit"]'
 
   async fillName(name: string) {
@@ -22,10 +21,6 @@ export class CreateUserPage extends BasePage {
 
   async fillConfirmedPassword(password: string) {
     await this.fillInput(this.confirmPaswwordInput, password)
-  }
-
-  async checkTerms() {
-    await this.checkCheckbox(this.termsCheck)
   }
 
   async submitForm() {

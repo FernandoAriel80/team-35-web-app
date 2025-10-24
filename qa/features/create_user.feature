@@ -8,50 +8,38 @@ Feature: Registro de usuario
     Given el usuario se encuentra en la página de registro
 
   Scenario: Registro exitoso con todos los datos válidos
-    When el usuario ingresa "Pyme S.A." en el campo nombre de empresa
-    And el usuario ingresa "<email>" en el campo email
-    And el usuario ingresa "<password>" en el campo contraseña
-    And el usuario confirma "<password>" en el campo confirmar contraseña
-    And acepta los términos y condiciones
+    When el usuario ingresa "Juan Perez" en el campo nombre completo de registro
+    And el usuario ingresa "<email>" en el campo email de registro
+    And el usuario ingresa "<password>" en el campo contraseña de registro
+    And el usuario confirma "<password>" en el campo confirmar contraseña de registro
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje "Registro exitoso"
-    And se debe mostrar el dashboard del sistema 
+    Then se debe mostrar un mensaje "Bienvenid@"
 
   Scenario: Intento de registro con campos vacíos
     When el usuario no ingresa ningún dato
     And hace click en el botón de registrarse
-    Then se deben mostrar mensajes de error indicando campos requeridos
+    Then no permite enviar registro con campos vacíos
 
   Scenario: Intento de registro con email inválido
-    When el usuario ingresa "correo-invalido" en el campo email
-    And el usuario ingresa "<password>" en el campo contraseña
-    And el usuario confirma "<password>" en el campo confirmar contraseña
-    And acepta los términos y condiciones
+    When el usuario ingresa "Juan Perez" en el campo nombre completo de registro
+    And el usuario ingresa "correo-invalido@correo" en el campo email de registro
+    And el usuario ingresa "<password>" en el campo contraseña de registro
+    And el usuario confirma "<password>" en el campo confirmar contraseña de registro
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "Formato de email inválido"
+    Then se debe mostrar un mensaje "El formato del correo electrónico no es válido"
 
   Scenario: Intento de registro con contraseñas no coincidentes
-    When el usuario ingresa "correo@correo.com" en el campo email
-    And el usuario ingresa "<password>" en el campo contraseña
-    And el usuario confirma "Password456!" en el campo confirmar contraseña
-    And acepta los términos y condiciones
+    When el usuario ingresa "Juan Perez" en el campo nombre completo de registro
+    And  el usuario ingresa "correo@correo.com" en el campo email de registro
+    And el usuario ingresa "<password>" en el campo contraseña de registro
+    And el usuario confirma "Password456!" en el campo confirmar contraseña de registro
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "Las contraseñas no coinciden"
-
-  Scenario: Intento de registro sin aceptar términos
-    When el usuario ingresa "Pyme S.A." en el campo nombre de empresa
-    And el usuario ingresa "correo@correo.com" en el campo email
-    And el usuario ingresa "<password>" en el campo contraseña
-    And el usuario confirma "<password>" en el campo confirmar contraseña
-    And no acepta los términos y condiciones
-    And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "Debe aceptar los términos y condiciones para continuar"
+    Then se debe mostrar un mensaje "La contraseñas deben ser iguales"
 
   Scenario: Intento de registro con email ya registrado
-    When el usuario ingresa "Pyme S.A." en el campo nombre de empresa
-    And el usuario ingresa "<email>" en el campo email
-    And el usuario ingresa "<password>" en el campo contraseña
-    And el usuario confirma "<password>" en el campo confirmar contraseña
-    And acepta los términos y condiciones
+    When el usuario ingresa "Juan Perez" en el campo nombre completo de registro
+    And el usuario ingresa "<email>" en el campo email de registro
+    And el usuario ingresa "<password>" en el campo contraseña de registro
+    And el usuario confirma "<password>" en el campo confirmar contraseña de registro
     And hace click en el botón de registrarse
-    Then se debe mostrar un mensaje de error "El email ya está registrado"
+    Then se debe mostrar un mensaje "Email already registered"

@@ -4,6 +4,11 @@ interface Props {
 
 export const ErrorMessage = ({ message }: Props) => {
   return (
-    <p className="text-red-500 text-xs w-full pt-3">{message}</p>
+    <p
+      data-test='form-message'
+      className='text-red-500 text-xs w-full pt-3'
+    >
+      {message}
+    </p>
   )
 }

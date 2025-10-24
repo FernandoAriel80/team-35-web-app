@@ -6,5 +6,13 @@ Before(async function (this: PlaywrightWorld) {
 })
 
 After(async function (this: PlaywrightWorld) {
+  // Reinicia la página en blanco para limpiar cualquier estado anterior
+  if (this.page && !this.page.isClosed()) {
+    await this.page.evaluate(() => {
+      const form = document.querySelector('form')
+      if (form) form.reset()
+    })
+    await this.page.reload({ waitUntil: 'domcontentloaded' })
+  }
   await this.cleanup()
 })
