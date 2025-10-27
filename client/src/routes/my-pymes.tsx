@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { PymeRegister } from '../../pages/Form/PymeRegister'
+import { MyPymes } from '../pages/Pymes/MyPymes'
 
-export const Route = createFileRoute('/form/pyme-register')({
+export const Route = createFileRoute('/my-pymes')({
   component: RouteComponent,
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated) {
@@ -11,5 +11,5 @@ export const Route = createFileRoute('/form/pyme-register')({
 })
 
 function RouteComponent() {
-  return <PymeRegister />
+  return <MyPymes />
 }
