@@ -1,0 +1,37 @@
+[
+  {
+    "id": "REQ-001",
+    "date": "2025-10-25",
+    "amount": 125000,
+    "status": "pending",
+    "documents": "https://storage-with-documents.com"
+  },
+  {
+    "id": "REQ-002",
+    "date": "2025-10-26",
+    "amount": 52000,
+    "status": "approved",
+    "documents": "https://storage-with-documents.com"
+  },
+  {
+    "id": "REQ-003",
+    "date": "2025-10-26",
+    "amount": 340000,
+    "status": "rejected",
+    "documents": "https://storage-with-documents.com"
+  },
+  {
+    "id": "REQ-004",
+    "date": "2025-10-27",
+    "amount": 89000,
+    "status": "pending",
+    "documents": "https://storage-with-documents.com"
+  },
+  {
+    "id": "REQ-005",
+    "date": "2025-10-28",
+    "amount": 250000,
+    "status": "approved",
+    "documents": "https://storage-with-documents.com"
+  }
+]
