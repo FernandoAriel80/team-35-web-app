@@ -10,11 +10,10 @@ import {
   BadRequestException,
 } from '@nestjs/common'
 import { LoginDto } from '../../domain/dto/login.dto'
-import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard'
 import { LoginResponse } from 'src/auth/domain/dto/login-response.dto'
 import { LOGIN_AUTH_USE_CASE } from 'src/auth/domain/usecase/login-auth.usecase'
 import type { LoginAuthUseCase } from 'src/auth/domain/usecase/login-auth.usecase'
-import type { logoutRequestDto } from 'src/auth/domain/dto/logout-request.dto'
+import type { RequestDto } from 'src/shared/domain/dto/request.dto'
 import type { LogoutAuthUseCase } from 'src/auth/domain/usecase/logout-auth.usecase'
 import { LOGOUT_AUTH_USE_CASE } from 'src/auth/domain/usecase/logout-auth.usecase'
 import {
@@ -29,6 +28,7 @@ import type { ValidateTokenUseCase } from 'src/auth/domain/usecase/validate-toke
 import { VALIDATE_TOKEN_USE_CASE } from 'src/auth/domain/usecase/validate-token-usecase'
 import type { Request } from 'express'
 import { AuthGuard } from '@nestjs/passport'
+import { JwtAuthGuard } from 'src/shared/infraestructure/guards/jwt-auth.guard'
 
 /**
  * Authentication Controller
@@ -131,7 +131,7 @@ export class AuthController {
     status: 401,
     description: 'Unauthorized - invalid or missing authentication token',
   })
-  logout(@Req() req: logoutRequestDto): LogoutResponseDto {
+  logout(@Req() req: RequestDto): LogoutResponseDto {
     const userId = req.user.id
     return this.logoutAuthUseCase.execute(userId)
   }
@@ -147,10 +147,6 @@ export class AuthController {
     example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
   async validateToken(@Req() request: Request) {
-    try {
-      return await this.validateTokenImplUseCase.execute(request)
-    } catch (error) {
-      console.error(error)
-    }
+    return await this.validateTokenImplUseCase.execute(request)
   }
 }

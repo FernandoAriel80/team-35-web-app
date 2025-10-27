@@ -93,7 +93,7 @@ function Header() {
 
         <div
           className={`
-            flex flex-col lg:flex-row items-center font-medium text-gray-700
+            flex flex-col lg:flex-row items-center font-medium text-gray-700 gap-4
             absolute lg:static top-full right-0 w-full lg:w-auto bg-slate-100/80 lg:bg-transparent backdrop-blur-md border-t border-gray-200 lg:border-none shadow-md lg:shadow-none
             overflow-hidden transition-all duration-300 ease-in-out
             ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'}
@@ -108,20 +108,25 @@ function Header() {
               { to: '/services', label: 'Servicios' },
               { to: '/about-us', label: 'Conócenos' },
               { to: '/contact', label: 'Contacto' },
-            ].map(({ to, label }) => (
-              <li key={to}>
-                <Link
-                  to={to}
-                  className='block px-4 py-2 hover:text-blue-600 transition-colors'
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+              { to: '/requests', label: 'Mis Solicitudes', isVisible: isAuthenticated }
+            ].map(({ to, label, isVisible = true }) => {
+              if (!isVisible) return null
+
+              return (
+                <li key={to}>
+                  <Link
+                    to={to}
+                    className='block px-4 py-2 hover:text-blue-600 transition-colors'
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
 
-          <div className='flex flex-col lg:flex-row lg:items-center w-fit gap-2 p-4 lg:p-0'>
+          <div className='flex flex-col lg:flex-row lg:items-center w-fit gap-2 lg:p-0 pb-4'>
             {!isAuthenticated && (
               <Link
                 to='/auth/login'
@@ -133,7 +138,7 @@ function Header() {
             )}
 
             <Link
-              to={isAuthenticated ? '/solicitar' : '/auth/register'}
+              to={isAuthenticated ? '/form/credit-request' : '/auth/register'}
               className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center'
               onClick={() => setMenuOpen(false)}
             >
