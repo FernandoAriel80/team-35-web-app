@@ -1,9 +1,19 @@
-type StatusRequest = "pending" | "approved" | "rejected"
+import type { Company } from "./company.interface";
+
+export type StatusRequest = 'PENDING' | 'APPROVED' | 'REJECTED'
 
 export interface Request {
-  id: number
-  date: string
-  amount: number
+  id: number;
+  requestedAmount: number;
   status: StatusRequest
-  documents: string
+  createdAt: Date;
+  updatedAt: Date;
+  company: Company;
+  documents: Document[];
+}
+
+export interface Document {
+  id: number;
+  url: string;
+  uploadedAt: Date;
 }
