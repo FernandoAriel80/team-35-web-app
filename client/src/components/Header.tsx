@@ -108,7 +108,16 @@ function Header() {
               { to: '/services', label: 'Servicios' },
               { to: '/about-us', label: 'Conócenos' },
               { to: '/contact', label: 'Contacto' },
-              { to: '/requests', label: 'Mis Solicitudes', isVisible: isAuthenticated }
+              {
+                to: '/my-pymes',
+                label: 'Mis Pymes',
+                isVisible: isAuthenticated,
+              },
+              {
+                to: '/requests',
+                label: 'Mis Solicitudes',
+                isVisible: isAuthenticated,
+              },
             ].map(({ to, label, isVisible = true }) => {
               if (!isVisible) return null
 
@@ -147,7 +156,7 @@ function Header() {
 
             {isAuthenticated && (
               <button
-                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center'
+                className='px-4 py-2 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 transition text-center cursor-pointer'
                 onClick={handleLogout}
               >
                 Cerrar Sesión
