@@ -1,17 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 
-import { Table } from '../../components/Table'
-import { useState } from 'react';
+import { Table } from '../../components/Table';
+import type { Request } from '../../interfaces';
+import { getRequestsByUserId } from '../../services/requests.service';
 
-const columnHelper = createColumnHelper<RequestRow>()
-
-type RequestRow = {
-  id: string;
-  date: string;
-  amount: number;
-  status: "pending" | "approved" | "rejected";
-  documents: string
-};
+const columnHelper = createColumnHelper<Request>()
 
 const columns = [
   columnHelper.accessor('id', {
@@ -67,48 +62,21 @@ const columns = [
       );
     },
   }),
-] as ColumnDef<RequestRow>[]
+] as ColumnDef<Request>[]
 
-const rows: RequestRow[] = [
-  {
-    id: "REQ-001",
-    date: "2025-10-25",
-    amount: 125000,
-    status: "pending",
-    documents: 'https://storage-with-documents.com'
-  },
-  {
-    id: "REQ-002",
-    date: "2025-10-26",
-    amount: 52000,
-    status: "approved",
-    documents: 'https://storage-with-documents.com'
-  },
-  {
-    id: "REQ-003",
-    date: "2025-10-26",
-    amount: 340000,
-    status: "rejected",
-    documents: 'https://storage-with-documents.com'
-  },
-  {
-    id: "REQ-004",
-    date: "2025-10-27",
-    amount: 89000,
-    status: "pending",
-    documents: 'https://storage-with-documents.com'
-  },
-  {
-    id: "REQ-005",
-    date: "2025-10-28",
-    amount: 250000,
-    status: "approved",
-    documents: 'https://storage-with-documents.com'
-  },
-];
-
-export const Request = () => {
+export const Requests = () => {
   const [filters, setFilters] = useState<Record<string, unknown>>({});
+  const [requests, setRequests] = useState<Request[]>([])
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+
+    if (!token) return
+
+    getRequestsByUserId(2, token)
+      .then(data => setRequests(data))
+      .catch(error => console.log(error))
+  }, [])
 
   const handleChange = (v: unknown, colId: string) => {
     setFilters(prev => ({ ...prev, [colId]: v || undefined }));
@@ -151,8 +119,7 @@ export const Request = () => {
         />
       </div>
 
-
-      <Table data={rows} columns={columns} columnFilters={filters} />
+      <Table data={requests} columns={columns} columnFilters={filters} />
     </section>
   )
 }
