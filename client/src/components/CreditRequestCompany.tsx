@@ -169,12 +169,16 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
         </div>
 
         <div>
-          <label className='text-xs text-slate-950'>Cantidad Solicitar (USD)</label>
+          <label className='text-xs text-slate-950'>
+            Monto a solicitar <span className='font-semibold text-blue-600'>(USD)</span>
+          </label>
           <input
-            onChange={(e) => setData(prev => ({ ...prev!, amount: Number(e.target.value) }))}
+            onChange={(e) =>
+              setData(prev => ({ ...prev!, amount: Number(e.target.value) }))
+            }
             className={`${inputStyle}`}
             type='number'
-            placeholder='Ej: 1500'
+            placeholder='Ej.: 1500'
           />
         </div>
       </footer>

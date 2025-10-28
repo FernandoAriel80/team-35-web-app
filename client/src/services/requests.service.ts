@@ -11,7 +11,7 @@ export const getRequestsByUserId = async (
   token: string
 ) => {
   try {
-    const response = await fetch(`${BASE_URL}/company/get-all-user-companies`, {
+    const response = await fetch(`${BASE_URL}/credit-application/get-credit-appl-by-user`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
