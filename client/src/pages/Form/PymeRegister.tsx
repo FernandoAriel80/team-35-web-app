@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { NewCompany } from '../../interfaces'
 import { Navigate } from '@tanstack/react-router'
+import { createCompany, updateCompany } from '../../services/companies.service'
 
 // Valores iniciales del formulario
 const initialFormData: NewCompany = {
@@ -22,13 +23,11 @@ export const PymeRegister = () => {
     text: string
   } | null>(null)
 
-  // Manejador genérico para la actualización del estado del formulario
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target
 
-    // Convertir el campo 'employeeCount' a número si no está vacío
     const newValue =
       type === 'number' && value !== '' ? parseInt(value, 10) : value
 
@@ -42,9 +41,6 @@ export const PymeRegister = () => {
     e.preventDefault()
     setIsSubmitting(true)
     setMessage(null)
-
-    // --- Lógica de Simulación de Envío a la API ---
-    console.log('Datos a enviar:', formData)
 
     if (
       !formData.name ||
@@ -62,18 +58,8 @@ export const PymeRegister = () => {
       return
     }
 
-    // Simular una llamada a la API (POST /api/companies)
     setTimeout(() => {
       setIsSubmitting(false)
-
-      // Simulación de éxito
-      console.log('PyME registrada con éxito:', formData.name)
-      setMessage({
-        type: 'success',
-        text: `¡${formData.name} ha sido registrada con éxito!`,
-      })
-      setFormData(initialFormData)
-
       return <Navigate to='/my-pymes' />
     }, 1500)
   }

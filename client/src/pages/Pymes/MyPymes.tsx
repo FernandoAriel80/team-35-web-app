@@ -1,16 +1,28 @@
 import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
-import { companies, type Company } from '../../interfaces/company.interface'
+import { useEffect, useState } from 'react'
 import { PymesTable } from '../../components/pymes/PymesTable'
 import { PymeDeleteModal } from '../../components/modals/PymeDeleteModal'
 import { PymeDetailModal } from '../../components/modals/PymeDetailsModal'
+import {
+  deleteCompanyById,
+  getCompaniesByUser,
+} from '../../services/companies.service'
+import type { Company } from '../../interfaces/company.interface'
 
 export const MyPymes = () => {
-  const hasPymes = companies.length > 0
-  const registerRoute = '/form/pyme-register'
-
+  const [companies, setCompanies] = useState<Company[]>([])
   const [selectedPyme, setSelectedPyme] = useState<Company | null>(null)
   const [pymeToDelete, setPymeToDelete] = useState<Company | null>(null)
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+
+    if (!token) return
+
+    getCompaniesByUser(token)
+      .then((data) => setCompanies(data))
+      .catch((error) => console.log(error))
+  }, [])
 
   const handleViewDetails = (pyme: Company) => {
     setSelectedPyme(pyme)
@@ -23,11 +35,14 @@ export const MyPymes = () => {
   const confirmDelete = () => {
     if (!pymeToDelete) return
 
-    console.log(
-      `[SIMULACIÓN] PyME ${pymeToDelete.name} eliminada. Se recargaría la lista.`
-    )
+    const token = window.localStorage.getItem('token')
+    if (!token) return
 
-    console.log(`Eliminando ${pymeToDelete.name}...`)
+    deleteCompanyById(pymeToDelete.id, token).then(() => {
+      setCompanies((prevCompanies) =>
+        prevCompanies.filter((company) => company.id !== pymeToDelete.id)
+      )
+    })
 
     setPymeToDelete(null)
   }
@@ -45,14 +60,14 @@ export const MyPymes = () => {
         </p>
       </div>
 
-      {hasPymes ? (
+      {companies.length > 0 ? (
         <div className='bg-white p-8 rounded-xl shadow-lg border border-gray-100 overflow-x-auto'>
           <div className='flex justify-between items-center mb-6 border-b pb-4'>
             <h2 className='text-xl font-semibold text-slate-800'>
               Empresas ({companies.length})
             </h2>
             <Link
-              to={registerRoute}
+              to='/form/pyme-register'
               className='inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out'
             >
               Registrar Nueva
@@ -88,7 +103,7 @@ export const MyPymes = () => {
             Comienza ahora para acceder a todos los beneficios y servicios.
           </p>
           <Link
-            to={registerRoute}
+            to='/form/pyme-register'
             className='bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-150 ease-in-out transform hover:scale-[1.02] inline-block'
           >
             ¡Registra tu primera PyME! 🚀
