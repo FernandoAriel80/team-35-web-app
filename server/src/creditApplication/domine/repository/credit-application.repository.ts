@@ -17,5 +17,8 @@ export interface CreditApplicationRepository {
   findByUser(
     userId: number,
   ): Promise<UserCreditApplicationsResponseDto[] | null>
+  findByCompanyCreditStatus(
+    companyId: number,
+  ): Promise<CreditApplication[] | null>
   updateStatus(id: number, status: string): Promise<CreditApplication | null>
 }

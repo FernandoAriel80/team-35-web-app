@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { UPLOAD_APPLICATION_DOCUMENTS_USECASE } from './domine/usecase/upload-application-documents.usecase'
 import { UploadApplicationDocumentsImplUseCase } from './application/usecases/upload-application-documents-impl.usecase'
 import { CreditApplicationController } from './infraestructure/controller/credit-application.controller'
@@ -16,7 +16,12 @@ import { UPDATE_STATUS_CREDIT_APP_USECASE } from './domine/usecase/update-status
 import { UpdateStatusCreditAppImplUseCase } from './application/usecases/update-status-credit-app-impl.usecase'
 
 @Module({
-  imports: [SharedModule, PrismaModule, DocumentModule, CompanyModule],
+  imports: [
+    SharedModule,
+    PrismaModule,
+    DocumentModule,
+    forwardRef(() => CompanyModule),
+  ],
   controllers: [CreditApplicationController],
   providers: [
     {
@@ -40,5 +45,6 @@ import { UpdateStatusCreditAppImplUseCase } from './application/usecases/update-
       useClass: CreditApplicationDbRepository,
     },
   ],
+  exports: [CREDIT_APPLICATION_REPOSITORY],
 })
 export class CreditApplicationModule {}

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { PrismaModule } from 'src/shared/infraestructure/database/prisma.module'
 import { COMPANY_REPOSITORY } from './domain/repository/company.repsitory'
 import { CompanyPgRepository } from './infraestructure/repository/company-pg.repository'
@@ -13,9 +13,10 @@ import { DELETE_COMPANY_USECASE } from './domain/usecase/delete-company.usecase'
 import { DeleteCompanyimplUseCase } from './application/usecase/dalete-company-impl.usecase'
 import { GET_ALL_COMPANY_USECASE } from './domain/usecase/get-all-company.usecase'
 import { GetAllCompanyImplUseCase } from './application/usecase/get-all-company-impl.usecase'
+import { CreditApplicationModule } from 'src/creditApplication/credit-application.module'
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, forwardRef(() => CreditApplicationModule)],
   providers: [
     {
       provide: COMPANY_REPOSITORY,
