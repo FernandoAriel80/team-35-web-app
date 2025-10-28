@@ -3,7 +3,7 @@ import { COMPANY_REPOSITORY } from 'src/company/domain/repository/company.repsit
 import type { CompanyRepository } from 'src/company/domain/repository/company.repsitory'
 import { CreditApplicationRequestDto } from 'src/creditApplication/domine/dto/creadit-app-request.dto'
 import { FileRequestDto } from 'src/creditApplication/domine/dto/file-request.dto'
-import { CREDIT_APPLICATIONREPOSITORY } from 'src/creditApplication/domine/repository/credit-application.repository'
+import { CREDIT_APPLICATION_REPOSITORY } from 'src/creditApplication/domine/repository/credit-application.repository'
 import type { CreditApplicationRepository } from 'src/creditApplication/domine/repository/credit-application.repository'
 import { UploadApplicationDocumentsUseCase } from 'src/creditApplication/domine/usecase/upload-application-documents.usecase'
 import { DataApplRequestDto } from 'src/document/domine/dto/data-appl-request.dto'
@@ -23,7 +23,7 @@ export class UploadApplicationDocumentsImplUseCase
     private documentRepository: DocumentRepository,
     @Inject(COMPANY_REPOSITORY)
     private companyRepository: CompanyRepository,
-    @Inject(CREDIT_APPLICATIONREPOSITORY)
+    @Inject(CREDIT_APPLICATION_REPOSITORY)
     private creditApplicationRepository: CreditApplicationRepository,
     @Inject(UPLOADFILE_SERVICE)
     private uploadfileService: UploadFileService,
