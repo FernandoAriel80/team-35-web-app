@@ -1,19 +1,36 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { Company } from '../interfaces'
-import { companies } from '../interfaces/company.interface'
+import { getCompanies } from '../services/company.service'
 
 interface Props {
-  onSelectCompany: (companyId: number) => void
+  onSelectCompany: (data: Data) => void
+}
+
+interface Data {
+  company: Company,
+  amount: number
 }
 
 export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [data, setData] = useState<Data>()
+
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+
+    if (!token) return
+
+    getCompanies(token)
+      .then(data => setCompanies(data))
+      .catch(error => console.log(error))
+  }, [])
 
   const handleSelectCompany = () => {
-    if (!selectedCompany) return
+    if (!data?.company) return
 
-    onSelectCompany(selectedCompany.id)
+    onSelectCompany(data)
   }
 
   const inputStyle =
@@ -37,7 +54,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
             className={`${inputStyle} ${activeStyle} text-center hover:cursor-pointer hover:bg-slate-300`}
             onChange={(e) => {
               const pyme = companies.find((p) => p.name === e.target.value)
-              setSelectedCompany(pyme || null)
+              setData(prev => ({ ...prev!, company: pyme! }))
             }}
             defaultValue=''
           >
@@ -58,6 +75,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
             ))}
           </select>
         </div>
+
       </header>
 
       <footer className='grid sm:grid-cols-2 gap-4'>
@@ -66,7 +84,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Nombre de la empresa</label>
           <input
             disabled
-            value={selectedCompany?.name || ''}
+            value={data?.company?.name || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='text'
             placeholder='Ej: InovaTech Solutions'
@@ -77,7 +95,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Tipo de empresa</label>
           <input
             disabled
-            value={selectedCompany?.type || ''}
+            value={data?.company?.type || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='text'
             placeholder='Ej: Sociedad limitada'
@@ -88,7 +106,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>RUT / Tax ID</label>
           <input
             disabled
-            value={selectedCompany?.taxId || ''}
+            value={data?.company?.taxId || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='text'
             placeholder='Ej: 76.123.456-7'
@@ -99,7 +117,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Actividad o rubro</label>
           <input
             disabled
-            value={selectedCompany?.activity || ''}
+            value={data?.company?.activity || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='text'
             placeholder='Ej: Servicios de software'
@@ -110,7 +128,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Número de empleados</label>
           <input
             disabled
-            value={selectedCompany?.employeeCount || ''}
+            value={data?.company?.employeeCount || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='number'
             placeholder='Ej: 25'
@@ -121,7 +139,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Dirección</label>
           <input
             disabled
-            value={selectedCompany?.address || ''}
+            value={data?.company?.address || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='text'
             placeholder='Ej: Av. Providencia 1234, Santiago'
@@ -132,7 +150,7 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Sitio web (opcional)</label>
           <input
             disabled
-            value={selectedCompany?.website || ''}
+            value={data?.company?.website || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='url'
             placeholder='Ej: https://innovatech.cl'
@@ -143,10 +161,20 @@ export const CreditRequestCompany = ({ onSelectCompany }: Props) => {
           <label className='text-xs text-slate-950'>Correo electrónico</label>
           <input
             disabled
-            value={selectedCompany?.email || ''}
+            value={data?.company?.email || ''}
             className={`${inputStyle} ${disabledStyle}`}
             type='email'
             placeholder='Ej: contacto@innovatech.cl'
+          />
+        </div>
+
+        <div>
+          <label className='text-xs text-slate-950'>Cantidad Solicitar (USD)</label>
+          <input
+            onChange={(e) => setData(prev => ({ ...prev!, amount: Number(e.target.value) }))}
+            className={`${inputStyle}`}
+            type='number'
+            placeholder='Ej: 1500'
           />
         </div>
       </footer>

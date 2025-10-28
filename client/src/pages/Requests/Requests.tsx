@@ -73,7 +73,7 @@ export const Requests = () => {
 
     if (!token) return
 
-    getRequestsByUserId(2, token)
+    getRequestsByUserId(token)
       .then(data => setRequests(data))
       .catch(error => console.log(error))
   }, [])

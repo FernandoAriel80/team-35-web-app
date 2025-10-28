@@ -4,9 +4,10 @@ import { FileIcon } from './icons/FileIcon';
 interface Props {
   onSelectFiles: (files: File[]) => void;
   onChangeStep: (step: number) => void
+  onSubmit: () => void
 }
 
-export const CreditRequestFiles = ({ onSelectFiles, onChangeStep }: Props) => {
+export const CreditRequestFiles = ({ onSelectFiles, onChangeStep, onSubmit }: Props) => {
 
   const [fileNames, setFileNames] = useState<Record<number, string>>({})
 
@@ -28,6 +29,7 @@ export const CreditRequestFiles = ({ onSelectFiles, onChangeStep }: Props) => {
     }
 
     onSelectFiles(files)
+    onSubmit()
   };
 
   const handleContainerClick = (index: number) => {
@@ -86,8 +88,9 @@ export const CreditRequestFiles = ({ onSelectFiles, onChangeStep }: Props) => {
             </div>
 
             <input
-              name={index.toString()}
+              name='files'
               type="file"
+              multiple={false}
               accept="application/pdf"
               hidden
               ref={e => { fileInputsRefs.current[index] = e }}
@@ -105,10 +108,10 @@ export const CreditRequestFiles = ({ onSelectFiles, onChangeStep }: Props) => {
           </button>
 
           <button
-            type="submit"
+            type='submit'
             className="py-2 px-4 bg-blue-500 rounded-xl text-white font-semibold hover:bg-blue-700 transition hover:cursor-pointer w-full"
           >
-            Firmar
+            Enviar Solicitud
           </button>
         </div>
       </form>

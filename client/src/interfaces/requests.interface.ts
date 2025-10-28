@@ -1,9 +1,12 @@
-type StatusRequest = "pending" | "approved" | "rejected"
-
 export interface Request {
-  id: number
-  date: string
-  amount: number
-  status: StatusRequest
-  documents: string
+  id: number;
+  userId: number;
+  name: string;
+  type: string;
+  taxId: string;
+  activity: string;
+  employeeCount: number;
+  address: string;
+  website: null | string;
+  email: string;
 }
