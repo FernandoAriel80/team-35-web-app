@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Inject,
   Post,
+  Put,
   Query,
   UploadedFiles,
   UseGuards,
@@ -274,7 +275,7 @@ export class CreditApplicationController {
     )
   }
 
-  @Get('/admin/update-status-credit-appl')
+  @Put('/admin/update-status-credit-appl')
   @Auth(UserRole.ADMIN)
   @ApiOperation({ summary: 'Update credit application status' })
   @ApiQuery({ name: 'id', type: Number, example: 1 })

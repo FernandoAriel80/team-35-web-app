@@ -13,7 +13,6 @@ model User {
   name             String
   email            String             @unique
   password         String
-  //tokenVersion Int      @default(1) 
   role             UserRole           @default(USER)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
@@ -32,7 +31,7 @@ model Company {
   address            String
   website            String?
   email              String
-  user               User                @relation(fields: [userId], references: [id])
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   creditApplications CreditApplication[]
 }
 
@@ -43,7 +42,7 @@ model CreditApplication {
   status           ApplicationStatus  @default(PENDING)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  company          Company            @relation(fields: [companyId], references: [id])
+  company          Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
   digitalSignature DigitalSignature[]
   documents        Document[]
 }
@@ -54,7 +53,7 @@ model Document {
   url                 String
   uploadedAt          DateTime           @default(now())
   digitalSignatures   DigitalSignature[]
-  creditApplication   CreditApplication  @relation(fields: [creditApplicationId], references: [id])
+  creditApplication   CreditApplication  @relation(fields: [creditApplicationId], references: [id], onDelete: Cascade)
 }
 
 model DigitalSignature {
@@ -64,9 +63,9 @@ model DigitalSignature {
   signedAt            DateTime          @default(now())
   signedDocumentUrl   String
   signerId            Int?
-  creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id])
-  document            Document          @relation(fields: [documentId], references: [id])
-  signer              User?             @relation(fields: [signerId], references: [id])
+  creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id], onDelete: Cascade)
+  document            Document          @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  signer              User?             @relation(fields: [signerId], references: [id], onDelete: Cascade)
 
   @@unique([creditApplicationId, documentId])
 }

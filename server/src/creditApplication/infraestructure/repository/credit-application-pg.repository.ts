@@ -99,6 +99,17 @@ export class CreditApplicationDbRepository
       where: { id },
     })
   }
+  async findByCompanyCreditStatus(
+    companyId: number,
+  ): Promise<CreditApplication[] | null> {
+    const result = await this.prismaService.creditApplication.findMany({
+      where: {
+        companyId: companyId,
+        status: ApplicationStatus.REJECTED,
+      },
+    })
+    return result.length > 0 ? result : null
+  }
   async findByUser(
     userId: number,
   ): Promise<UserCreditApplicationsResponseDto[] | null> {
