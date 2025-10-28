@@ -28,11 +28,12 @@ import type { GetAllCompanyUseCase } from 'src/company/domain/usecase/get-all-co
 import { GET_ALL_COMPANY_USECASE } from 'src/company/domain/usecase/get-all-company.usecase'
 import type { UpdateCompanyUseCase } from 'src/company/domain/usecase/update-company.usecase'
 import { UPDATE_COMPANY_USECASE } from 'src/company/domain/usecase/update-company.usecase'
-/* import { UserRole } from 'src/shared/domain/enums/user-role.enum'
-import { Roles } from 'src/shared/infraestructure/decorators/roles.decorator'
+import { UserRole } from 'src/shared/domain/enums/user-role.enum'
+/* import { Roles } from 'src/shared/infraestructure/decorators/roles.decorator'
 import { RolesGuard } from 'src/shared/infraestructure/guards/roles.guard' */
 import { User } from 'src/shared/infraestructure/decorators/user.decorator'
 import { JwtAuthGuard } from 'src/shared/infraestructure/guards/jwt-auth.guard'
+import { Auth } from 'src/shared/infraestructure/decorators/auth.decorator'
 
 @ApiTags('Company')
 @ApiBearerAuth()
@@ -51,6 +52,12 @@ export class CompanyController {
     private readonly getAllCompanyUseCase: GetAllCompanyUseCase,
   ) {}
 
+  @Get()
+  @Auth(UserRole.ADMIN)
+  @ApiOperation({ summary: 'Obtener todas las compañías' })
+  async getCompanies() {
+    return await this.getAllCompanyUseCase.execute()
+  }
   /* @Get('/:id')
   @UseGuards(JwtAuthGuard)
   async getAllCompanyByUser(@Param('id') id: string) {
@@ -124,12 +131,4 @@ export class CompanyController {
     const companyId = parseInt(id)
     return this.deleteCompanyUseCase.execute(companyId)
   }
-
-  /*   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
-  @ApiOperation({ summary: 'Obtener todas las compañías' })
-  async getCompanies() {
-    return await this.getAllCompanyUseCase.execute()
-  } */
 }
