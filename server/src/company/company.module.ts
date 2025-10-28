@@ -43,5 +43,6 @@ import { GetAllCompanyImplUseCase } from './application/usecase/get-all-company-
     },
   ],
   controllers: [CompanyController],
+  exports: [COMPANY_REPOSITORY],
 })
 export class CompanyModule {}

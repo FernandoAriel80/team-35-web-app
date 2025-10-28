@@ -26,9 +26,6 @@ export class RolesGuard implements CanActivate {
 
     // 3️⃣ Obtener el usuario desde el request
     const request = context.switchToHttp().getRequest<Request>()
-
-    console.log('[RolesGuard] req.user:', request.user)
-    console.log('[RolesGuard] required roles:', requiredRoles)
     const user = request.user as JwtPayloadGuardDto | undefined
 
     if (!user) {

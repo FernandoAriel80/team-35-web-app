@@ -12,13 +12,14 @@ import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from './infraestructure/strategies/jwt.strategy'
 import { JwtAuthGuard } from './infraestructure/guards/jwt-auth.guard'
 import { RolesGuard } from './infraestructure/guards/roles.guard'
-import { APP_GUARD } from '@nestjs/core'
+import { UPLOADFILE_SERVICE } from './domain/service/uploadfile.service'
+import { UploadThingimplService } from './application/service/uploadthing-impl.service'
 
 @Global()
 @Module({
   imports: [
     PrismaModule,
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }), //,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_ACCESS_SECRET,
@@ -28,6 +29,7 @@ import { APP_GUARD } from '@nestjs/core'
   providers: [
     JwtStrategy,
     JwtAuthGuard,
+    RolesGuard,
     {
       provide: USER_REPOSITORY,
       useClass: UserPgRepository,
@@ -41,17 +43,20 @@ import { APP_GUARD } from '@nestjs/core'
       useClass: TokenImplService,
     },
     {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
+      provide: UPLOADFILE_SERVICE,
+      useClass: UploadThingimplService,
     },
   ],
   exports: [
     USER_REPOSITORY,
     PASSWORD_SERVICE,
     TOKEN_SERVICE,
+    UPLOADFILE_SERVICE,
     JwtModule,
     PrismaModule,
-    JwtAuthGuard, // ← Exporta el guard si quieres usarlo en otros módulos
+    JwtAuthGuard,
+    RolesGuard,
+    PassportModule,
   ],
 })
 export class SharedModule {}
