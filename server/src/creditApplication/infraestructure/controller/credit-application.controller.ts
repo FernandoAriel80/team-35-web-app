@@ -54,11 +54,11 @@ export class CreditApplicationController {
 
   @Post('upload-documents')
   @UseGuards(JwtAuthGuard)
-  @PdfFileUpload(5)
+  @PdfFileUpload(4)
   @ApiOperation({
     summary: 'Upload credit application documents',
     description:
-      'Upload PDF documents required for credit application. Maximum 5 PDF files, 10MB each.',
+      'Upload PDF documents required for credit application. Maximum 4 PDF files, 10MB each.',
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -72,7 +72,7 @@ export class CreditApplicationController {
             type: 'string',
             format: 'binary',
           },
-          description: 'PDF files (max 5)',
+          description: 'PDF files (max 4)',
         },
         companyId: {
           type: 'string',

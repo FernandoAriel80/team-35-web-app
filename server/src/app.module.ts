@@ -7,6 +7,7 @@ import { DocusignModule } from './docusign/docusign.module'
 import { CompanyModule } from './company/company.module'
 import { CreditApplicationModule } from './creditApplication/credit-application.module'
 import { DocumentModule } from './document/document.module'
+import { DigitalSignatureModule } from './digitalSignature/digital-signature.module'
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { DocumentModule } from './document/document.module'
     CompanyModule,
     CreditApplicationModule,
     DocumentModule,
+    DigitalSignatureModule,
   ],
   controllers: [],
   providers: [],

@@ -8,10 +8,10 @@ export class DocusealImplService implements DocusealService {
     docuseal.configure({
       key: process.env.DOCUSEAL_API_KEY,
       url: 'https://api.docuseal.com',
-    });
+    })
   }
 
-  async sendContract(emailAddress: string): Promise<any> {
+  async sendContract(emailAddress: string, creditAppId: number): Promise<any> {
     const submission = await docuseal.createSubmission({
       template_id: 1908211,
       send_email: true,
@@ -19,6 +19,9 @@ export class DocusealImplService implements DocusealService {
         {
           role: 'First Party',
           email: emailAddress,
+          metadata: {
+            credit_app_id: creditAppId,
+          },
         },
       ],
     })
