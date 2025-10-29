@@ -79,7 +79,7 @@ export const getCompanyById = async (
 
 export const updateCompany = async (
   companyId: number,
-  companyData: NewCompany,
+  companyData: Company,
   token: string
 ) => {
   try {
