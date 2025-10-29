@@ -1,18 +1,20 @@
 export interface Company {
-  id: number
-  name: string
-  type: string
-  taxId: string
-  activity: string
-  employeeCount: number
-  address: string
-  website?: string
-  email: string
+  id: number;
+  userId: number;
+  name: string;
+  type: string;
+  taxId: string;
+  activity: string;
+  employeeCount: number;
+  address: string;
+  website: null | string;
+  email: string;
 }
 
 export const companies: Company[] = [
   {
     id: 1,
+    userId: 1,
     name: 'InovaTech Solutions',
     type: 'Sociedad limitada',
     taxId: '76.123.456-7',
@@ -24,6 +26,7 @@ export const companies: Company[] = [
   },
   {
     id: 2,
+    userId: 2,
     name: 'EcoVerde Ltda',
     type: 'Sociedad por acciones',
     taxId: '78.987.654-3',
@@ -35,6 +38,7 @@ export const companies: Company[] = [
   },
   {
     id: 3,
+    userId: 3,
     name: 'ConstruMax Chile',
     type: 'E.I.R.L.',
     taxId: '77.555.444-1',
