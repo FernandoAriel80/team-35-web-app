@@ -25,4 +25,19 @@ export class UploadThingimplService implements UploadFileService {
       size: buffer.length,
     }
   }
+
+  async downloadPDFWithMime(
+    url: string,
+  ): Promise<{ buffer: Buffer; mimeType: string }> {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Failed to download file: ${response.statusText}`)
+    }
+    const mimeType =
+      response.headers.get('content-type') || 'application/octet-stream'
+
+    const arrayBuffer = await response.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+    return { buffer, mimeType }
+  }
 }
