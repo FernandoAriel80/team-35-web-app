@@ -7,17 +7,13 @@ import type {
   ValidateTokenResponse,
 } from '../interfaces/auth.interface'
 
-const URL = import.meta.env.VITE_BASE_URL
-const PORT = import.meta.env.VITE_PORT
-const API_URL = import.meta.env.VITE_API_URL
-
-const BASE_URL = API_URL || URL + PORT
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 export const registerService = async (
   data: RegisterInput
 ): Promise<RegisterResponse> => {
   try {
-    const response = await fetch(`${BASE_URL}/user/register`, {
+    const response = await fetch(`${VITE_BACKEND_URL}/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +38,7 @@ export const loginService = async (
   data: LoginInput
 ): Promise<LoginResponse> => {
   try {
-    const response = await fetch(`${BASE_URL}/auth/login`, {
+    const response = await fetch(`${VITE_BACKEND_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +63,7 @@ export const validateTokenService = async (
   token: string
 ): Promise<ValidateTokenResponse> => {
   try {
-    const response = await fetch(`${BASE_URL}/auth/validate-token`, {
+    const response = await fetch(`${VITE_BACKEND_URL}/auth/validate-token`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
