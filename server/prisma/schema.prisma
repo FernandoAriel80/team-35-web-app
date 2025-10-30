@@ -72,4 +72,5 @@ enum ApplicationStatus {
   PENDING
   APPROVED
   REJECTED
+  PENDING_SIGN
 }
