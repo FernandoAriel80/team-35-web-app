@@ -14,7 +14,7 @@ export class DocusealImplService implements DocusealService {
 
   async sendContract(emailAddress: string, creditAppId: number): Promise<any> {
     const submission = await docuseal.createSubmission({
-      template_id: 1908211,
+      template_id: parseInt(process.env.DOCUSEAL_TEMPLATE_ID ?? ''),
       send_email: true,
       submitters: [
         {

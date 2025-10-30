@@ -20,8 +20,10 @@ export interface UserCreditApplicationsResponseDto {
     url: string
     uploadedAt: Date
   }[]
-  /* digitalSignature: {
+  digitalSignature: {
     id: number
+    url: string
+    uploadedAt: Date
     // Agrega los campos específicos de DigitalSignature según tu schema
-  }[] */
+  }[]
 }

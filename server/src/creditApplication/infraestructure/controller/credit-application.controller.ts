@@ -54,7 +54,7 @@ export class CreditApplicationController {
 
   @Post('upload-documents')
   @UseGuards(JwtAuthGuard)
-  @PdfFileUpload(4)
+  @PdfFileUpload(5)
   @ApiOperation({
     summary: 'Upload credit application documents',
     description:
@@ -207,50 +207,6 @@ export class CreditApplicationController {
   @ApiResponse({
     status: 200,
     description: 'Successfully retrieved credit applications list',
-    schema: {
-      example: {
-        data: [
-          {
-            id: 1,
-            companyId: 1,
-            requestedAmount: 50000,
-            status: 'PENDING',
-            createdAt: '2023-10-01T10:00:00.000Z',
-            updatedAt: '2023-10-01T10:00:00.000Z',
-            company: {
-              id: 1,
-              userId: 1,
-              name: 'Company ABC',
-              type: 'SRL',
-              taxId: '123456789',
-              activity: 'Technology',
-              employeeCount: 50,
-              address: '123 Main St',
-              website: 'https://company.com',
-              email: 'info@company.com',
-              user: {
-                id: 1,
-                name: 'John Doe',
-                email: 'john@email.com',
-                role: 'USER',
-                createdAt: '2023-09-01T10:00:00.000Z',
-                updatedAt: '2023-09-01T10:00:00.000Z',
-              },
-            },
-            digitalSignature: [],
-            documents: [],
-          },
-        ],
-        pagination: {
-          currentPage: 1,
-          totalPages: 5,
-          totalItems: 50,
-          itemsPerPage: 10,
-          hasNext: true,
-          hasPrev: false,
-        },
-      },
-    },
   })
   @ApiResponse({
     status: 401,
