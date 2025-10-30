@@ -8,9 +8,10 @@ import { ProcessWebhookImplUseCase } from './application/usecase/process-webhook
 import { PROCESS_WEBHOOK_USECASE } from './domain/usecase/process-webhook.usecase'
 import { DigitalSignatureModule } from 'src/digitalSignature/digital-signature.module'
 import { SharedModule } from 'src/shared/shared.module'
+import { CreditApplicationModule } from 'src/creditApplication/credit-application.module'
 
 @Module({
-  imports: [DigitalSignatureModule, SharedModule],
+  imports: [DigitalSignatureModule, SharedModule, CreditApplicationModule],
   controllers: [DocuSignController],
   providers: [
     {
