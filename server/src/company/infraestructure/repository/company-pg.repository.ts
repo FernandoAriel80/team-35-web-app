@@ -10,7 +10,11 @@ export class CompanyPgRepository implements CompanyRepository {
   constructor(private prisma: PrismaService) {}
 
   async all(): Promise<CompanyDbResponseDto[] | null> {
-    return await this.prisma.company.findMany()
+    return await this.prisma.company.findMany({
+      include: {
+        user: true,
+      },
+    })
   }
   async findById(id: number): Promise<CompanyDbResponseDto | null> {
     return await this.prisma.company.findFirst({

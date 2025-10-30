@@ -60,8 +60,6 @@ model DigitalSignature {
   url                 String
   uploadedAt          DateTime           @default(now())
   creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id], onDelete: Cascade)
-
-  @@unique([creditApplicationId])
 }
 
 enum UserRole {

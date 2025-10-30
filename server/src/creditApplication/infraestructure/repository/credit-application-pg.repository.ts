@@ -61,6 +61,7 @@ export class CreditApplicationDbRepository
             },
           },
           documents: true,
+          digitalSignature: true,
         },
         orderBy: {
           createdAt: 'desc',
