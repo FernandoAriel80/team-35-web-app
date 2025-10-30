@@ -12,8 +12,6 @@ export const PymeRow = ({
   onViewDetails,
   onDeleteClick,
 }: PymeRowProps) => {
-  const editRoute = `/form/pyme-edit/${pyme.id}`
-
   return (
     <tr className='border-b hover:bg-slate-50 transition duration-150'>
       <td className='p-4 font-medium text-slate-800'>{pyme.name}</td>
@@ -32,7 +30,8 @@ export const PymeRow = ({
           🔍 Detalles
         </button>
         <Link
-          to={editRoute}
+          to='/form/pyme-edit'
+          state={{ company: pyme } as unknown as true}
           className='text-yellow-600 hover:text-yellow-800 font-semibold text-sm transition duration-150'
         >
           📝 Editar
