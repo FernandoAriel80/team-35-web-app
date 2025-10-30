@@ -66,3 +66,28 @@ const handleError = (error: ErrorResponse) => {
 
   throw new Error(message)
 }
+
+export const getAllRequests = async (
+  token: string
+) => {
+  try {
+    const response = await fetch(`${BASE_URL}/`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const error: ErrorResponse = await response.json()
+      throw error
+    }
+
+    const result = await response.json()
+
+    return result
+  } catch (error) {
+    handleError(error as ErrorResponse)
+  }
+}
