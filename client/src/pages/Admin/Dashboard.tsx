@@ -4,7 +4,7 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table"
 
 import { Table } from "../../components/Table"
 import type { Data, StatusRequest } from "../../interfaces"
-import { getAllRequests } from "../../services/requests.service"
+import { changeRequestState, createSubmission, getAllRequests } from "../../services/requests.service"
 import { DocumentsModal } from "../../components/modals/DocumentsModal"
 
 interface DocumentLink {
@@ -13,24 +13,39 @@ interface DocumentLink {
 }
 
 export const Dashboard = () => {
-  const columnHelper = createColumnHelper<Data>()
-
   const [requests, setRequests] = useState<Data[]>([])
 
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [documentLinks, setDocumentLinks] = useState<DocumentLink[]>([])
 
-  useEffect(() => {
+  const columnHelper = createColumnHelper<Data>()
+
+
+  const handleCreateSubmission = (data: { creditApplicationId: string, email: string }) => {
+    const token = window.localStorage.getItem('token')
+    if (!token) return
+
+    createSubmission(token, data)
+      .then(() => {
+        getAllRequests(token)
+          .then(({ data }) => setRequests(data))
+          .catch(error => console.error(error))
+      })
+
+  }
+
+  const handleChangeRequestState = (data: { creditApplicationId: string, status: StatusRequest }) => {
     const token = window.localStorage.getItem('token')
 
     if (!token) return
 
-    getAllRequests(token)
-      .then(({ data }) => setRequests(data))
-      .catch(error => console.error(error))
-
-  }, [])
-
+    changeRequestState(token, data)
+      .then(() => {
+        getAllRequests(token)
+          .then(({ data }) => setRequests(data))
+          .catch(error => console.error(error))
+      })
+  }
 
   const columns = [
     columnHelper.accessor('id', {
@@ -72,12 +87,14 @@ export const Dashboard = () => {
           PENDING: "bg-yellow-100 text-yellow-800 border-yellow-300",
           APPROVED: "bg-green-100 text-green-800 border-green-300",
           REJECTED: "bg-red-100 text-red-800 border-red-300",
-        };
+          PENDING_SIGN: "bg-blue-100 text-blue-800 border-blue-300",
+        }
 
         const statusSpanishMap = {
           PENDING: 'Pendiente',
           APPROVED: 'Aprobado',
           REJECTED: 'Rechazado',
+          PENDING_SIGN: 'Pendiente de Firma',
         };
 
         return (
@@ -118,13 +135,20 @@ export const Dashboard = () => {
     columnHelper.display({
       header: 'Acciones',
       cell: ({ row }) => {
-        const { status }: Data = row.original
+        const { status, id, company }: Data = row.original
 
         if (status !== 'PENDING') return null
+
+        const inputData = {
+          creditApplicationId: id.toString(),
+          email: company.user.email
+        }
+
 
         return (
           <div className="flex gap-2">
             <button
+              onClick={() => handleCreateSubmission(inputData)}
               className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors hover:cursor-pointer"
             >
               Enviar a firmar
@@ -132,6 +156,7 @@ export const Dashboard = () => {
 
             <button
               className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-lg transition-colors hover:cursor-pointer"
+              onClick={() => handleChangeRequestState({ creditApplicationId: inputData.creditApplicationId, status: 'REJECTED' })}
             >
               Rechazar
             </button>
@@ -141,6 +166,16 @@ export const Dashboard = () => {
     }),
   ] as ColumnDef<Data>[]
 
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+
+    if (!token) return
+
+    getAllRequests(token)
+      .then(({ data }) => setRequests(data))
+      .catch(error => console.error(error))
+  }, [])
 
   return (
     <div className="flex min-h-screen bg-background-light font-sans text-background-dark">

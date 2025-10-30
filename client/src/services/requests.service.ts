@@ -1,3 +1,4 @@
+import type { StatusRequest } from "../interfaces"
 import type { ErrorResponse } from "../interfaces/auth.interface"
 
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL
@@ -86,3 +87,56 @@ export const getAllRequests = async (
     handleError(error as ErrorResponse)
   }
 }
+
+export const createSubmission = async (
+  token: string,
+  { email, creditApplicationId }: { creditApplicationId: string, email: string }
+) => {
+
+  try {
+    const response = await fetch(`${VITE_BACKEND_URL}/docuSign/admin/${creditApplicationId}/${email}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    })
+
+    if (!response.ok) {
+      const error: ErrorResponse = await response.json()
+      throw error
+    }
+
+    const result = await response.json()
+
+    return result
+  } catch (error) {
+    handleError(error as ErrorResponse)
+  }
+}
+
+export const changeRequestState = async (
+  token: string,
+  data: { creditApplicationId: string, status: StatusRequest }
+) => {
+  try {
+    const response = await fetch(`${VITE_BACKEND_URL}/credit-application/admin/update-status-credit-appl?id=${data.creditApplicationId}&status=${data.status}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const error: ErrorResponse = await response.json()
+      throw error
+    }
+
+    const result = await response.json()
+
+    return result
+  } catch (error) {
+    handleError(error as ErrorResponse)
+  }
+}
+

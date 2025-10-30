@@ -1,6 +1,6 @@
 import type { Company } from "./company.interface";
 
-export type StatusRequest = 'PENDING' | 'APPROVED' | 'REJECTED'
+export type StatusRequest = 'PENDING' | 'APPROVED' | 'REJECTED' | 'PENDING_SIGN'
 
 export interface Request {
   id: number;
@@ -20,7 +20,6 @@ export interface Document {
 
 export interface RequestResponse {
   data: Data[];
-  // pagination: Pagination;
 }
 
 export interface Data {
@@ -65,12 +64,3 @@ export interface DigitalSignature {
   url: string;
   uploadedAt: Date;
 }
-
-// export interface Pagination {
-//   currentPage: number;
-//   totalPages: number;
-//   totalItems: number;
-//   itemsPerPage: number;
-//   hasNext: boolean;
-//   hasPrev: boolean;
-// }
