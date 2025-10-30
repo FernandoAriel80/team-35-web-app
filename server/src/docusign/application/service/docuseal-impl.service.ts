@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { DocusealService } from '../../domain/service/docuseal.service'
+
 import docuseal from '@docuseal/api'
+import { DocusealService } from '../../domain/service/docuseal.service'
 
 @Injectable()
 export class DocusealImplService implements DocusealService {
   constructor() {
     docuseal.configure({
       key: process.env.DOCUSEAL_API_KEY,
-      url: 'https://api.docuseal.com',
+      url: 'https://api.docuseal.com/',
     })
   }
 
@@ -17,7 +18,6 @@ export class DocusealImplService implements DocusealService {
       send_email: true,
       submitters: [
         {
-          role: 'First Party',
           email: emailAddress,
           metadata: {
             credit_app_id: creditAppId,
