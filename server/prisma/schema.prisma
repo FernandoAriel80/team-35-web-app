@@ -17,7 +17,6 @@ model User {
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   Company          Company[]
-  DigitalSignature DigitalSignature[]
 }
 
 model Company {
@@ -52,22 +51,17 @@ model Document {
   creditApplicationId Int
   url                 String
   uploadedAt          DateTime           @default(now())
-  digitalSignatures   DigitalSignature[]
   creditApplication   CreditApplication  @relation(fields: [creditApplicationId], references: [id], onDelete: Cascade)
 }
 
 model DigitalSignature {
   id                  Int               @id @default(autoincrement())
   creditApplicationId Int
-  documentId          Int
-  signedAt            DateTime          @default(now())
-  signedDocumentUrl   String
-  signerId            Int?
+  url                 String
+  uploadedAt          DateTime           @default(now())
   creditApplication   CreditApplication @relation(fields: [creditApplicationId], references: [id], onDelete: Cascade)
-  document            Document          @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  signer              User?             @relation(fields: [signerId], references: [id], onDelete: Cascade)
 
-  @@unique([creditApplicationId, documentId])
+  @@unique([creditApplicationId])
 }
 
 enum UserRole {

@@ -7,4 +7,8 @@ export interface UploadFileService {
     filename: string,
     mimetype: string,
   ): Promise<UploadFileResponseDto>
+
+  downloadPDFWithMime(
+    url: string,
+  ): Promise<{ buffer: Buffer; mimeType: string }>
 }

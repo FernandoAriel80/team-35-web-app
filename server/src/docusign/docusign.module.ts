@@ -4,9 +4,13 @@ import { DocusealImplService } from './application/service/docuseal-impl.service
 import { DocuSignController } from './infrastructure/controller/docu-sign.controller'
 import { SEND_CONTRACT_USE_CASE } from './domain/usecase/send-contract.usecase'
 import { SendContractImplUseCase } from './application/usecase/send-contract-impl-use-case.service'
+import { ProcessWebhookImplUseCase } from './application/usecase/process-webhook-impl.usecase'
+import { PROCESS_WEBHOOK_USECASE } from './domain/usecase/process-webhook.usecase'
+import { DigitalSignatureModule } from 'src/digitalSignature/digital-signature.module'
+import { SharedModule } from 'src/shared/shared.module'
 
 @Module({
-  imports: [],
+  imports: [DigitalSignatureModule, SharedModule],
   controllers: [DocuSignController],
   providers: [
     {
@@ -16,6 +20,11 @@ import { SendContractImplUseCase } from './application/usecase/send-contract-imp
     {
       provide: SEND_CONTRACT_USE_CASE,
       useClass: SendContractImplUseCase,
-    }]
+    },
+    {
+      provide: PROCESS_WEBHOOK_USECASE,
+      useClass: ProcessWebhookImplUseCase,
+    },
+  ],
 })
-export class DocusignModule {}
+export class DocusignModule { }
