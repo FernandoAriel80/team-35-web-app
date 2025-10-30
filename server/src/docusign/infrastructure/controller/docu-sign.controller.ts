@@ -134,10 +134,6 @@ export class DocuSignController {
     description: 'Internal server error while processing webhook',
   })
   async handleDocuSealWebhook(@Body() webhookData: DocuSealWebhookDto) {
-    // if (!webhookData?.submission?.id || !webhookData?.document?.url) {
-    //   throw new HttpException('Invalid webhook payload', HttpStatus.BAD_REQUEST)
-    // }
-
     await this.processWebhookUseCase.execute(webhookData)
 
     return { status: 'success', message: 'Webhook processed' }

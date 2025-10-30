@@ -23,7 +23,7 @@ export function Table<T>({ data, columns, columnFilters = {} }: TableProps<T>) {
       .filter(([, value]) => value !== undefined && value !== '')
       .map(([id, value]) => ({ id, value }));
     setInternalFilters(filtersArray);
-  }, [columnFilters]);
+  }, []);
 
   const table = useReactTable({
     data,

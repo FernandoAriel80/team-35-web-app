@@ -17,7 +17,7 @@ export class ProcessWebhookImplUseCase implements ProcessWebhookUseCase {
   ) { }
 
   async execute(webhookData: DocuSealWebhookDto): Promise<void> {
-    const { id, documents, metadata } = webhookData.data
+    const { id, documents, submitters } = webhookData.data
 
     const pdfName = `signed-document-${id}.pdf`
 
@@ -34,7 +34,7 @@ export class ProcessWebhookImplUseCase implements ProcessWebhookUseCase {
     if (!resulteUrlSize)
       throw new ConflictException('Error to save pdf in storage')
 
-    const creditAppId = metadata.credit_app_id ?? ''
+    const creditAppId = submitters[0].metadata.credit_app_id ?? ''
 
     const newDoc: DocumentRequestDto = {
       creditApplicationId: parseInt(creditAppId),

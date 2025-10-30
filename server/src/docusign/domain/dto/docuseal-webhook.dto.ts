@@ -6,36 +6,70 @@ export interface DocuSealWebhookDto {
 
 export interface Data {
   id: number
-  submission_id: number
-  email: string
-  ua: string
-  ip: string
-  sent_at: Date
-  opened_at: Date
-  completed_at: Date
-  declined_at: null
+  name: null
+  slug: string
+  source: string
+  submitters_order: string
+  expire_at: null
   created_at: Date
   updated_at: Date
-  name: null
-  phone: null
-  role: string
-  external_id: null
-  application_key: null
-  decline_reason: null
-  status: string
-  preferences: Preferences
-  submission: Submission
+  archived_at: null
+  submitters: Submitter[]
   template: Template
-  values: Value[]
-  metadata: Metadata
-  audit_log_url: string
-  submission_url: string
+  created_by_user: CreatedByUser
+  variables: Variables
+  submission_events: SubmissionEvent[]
   documents: Document[]
+  audit_log_url: string
+  combined_document_url: null
+  status: string
+  completed_at: Date
+}
+
+export interface CreatedByUser {
+  id: number
+  email: string
+  first_name: string
+  last_name: string
 }
 
 export interface Document {
   name: string
   url: string
+}
+
+export interface SubmissionEvent {
+  id: number
+  submitter_id: number
+  event_type: string
+  event_timestamp: Date
+  data: Variables
+}
+
+export interface Variables { }
+
+export interface Submitter {
+  id: number
+  email: string
+  phone: null
+  name: null
+  ua: string
+  ip: string
+  sent_at: Date
+  opened_at: Date
+  declined_at: null
+  completed_at: Date
+  created_at: Date
+  updated_at: Date
+  external_id: null
+  metadata: Metadata
+  status: string
+  application_key: null
+  decline_reason: null
+  preferences: Preferences
+  values: Value[]
+  role: string
+  documents: Document[]
 }
 
 export interface Metadata {
@@ -47,18 +81,9 @@ export interface Preferences {
   send_sms: boolean
 }
 
-export interface Submission {
-  id: number
-  audit_log_url: string
-  combined_document_url: string
-  status: string
-  url: string
-  variables: Variables
-  created_at: Date
-}
-
-export interface Variables {
-  custom_variable: string
+export interface Value {
+  field: string
+  value: null | string
 }
 
 export interface Template {
@@ -68,9 +93,4 @@ export interface Template {
   created_at: Date
   updated_at: Date
   folder_name: string
-}
-
-export interface Value {
-  field: string
-  value: string
 }
