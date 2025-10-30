@@ -33,7 +33,7 @@ export class DocuSignController {
     private readonly sendContractUseCase: SendContractUseCase,
     @Inject(PROCESS_WEBHOOK_USECASE)
     private readonly processWebhookUseCase: ProcessWebhookUseCase,
-  ) {}
+  ) { }
 
   @Post('/admin/:id/:email')
   @Auth(UserRole.ADMIN)
@@ -45,7 +45,7 @@ export class DocuSignController {
   @ApiParam({
     name: 'id',
     description: 'Credit application ID',
-    type: Number,
+    type: String,
     example: 12345,
   })
   @ApiParam({
@@ -80,7 +80,7 @@ export class DocuSignController {
   })
   async sendContract(
     @Param('email') email: string,
-    @Param('creditApplicationId') creditApplicationId: string,
+    @Param('id') creditApplicationId: string,
   ) {
     const creditAppId = parseInt(creditApplicationId)
     return await this.sendContractUseCase.execute(email, creditAppId)
@@ -133,10 +133,10 @@ export class DocuSignController {
     status: 500,
     description: 'Internal server error while processing webhook',
   })
-  async handleDocuSealWebhook(@Body() webhookData: DocuSealWebhookDto<string>) {
-    if (!webhookData?.submission?.id || !webhookData?.document?.url) {
-      throw new HttpException('Invalid webhook payload', HttpStatus.BAD_REQUEST)
-    }
+  async handleDocuSealWebhook(@Body() webhookData: DocuSealWebhookDto) {
+    // if (!webhookData?.submission?.id || !webhookData?.document?.url) {
+    //   throw new HttpException('Invalid webhook payload', HttpStatus.BAD_REQUEST)
+    // }
 
     await this.processWebhookUseCase.execute(webhookData)
 

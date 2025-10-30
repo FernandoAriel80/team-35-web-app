@@ -14,15 +14,15 @@ export class ProcessWebhookImplUseCase implements ProcessWebhookUseCase {
     private readonly digitalSignatureRepository: DigitalSignatureRepository,
     @Inject(UPLOADFILE_SERVICE)
     private readonly uploadFileService: UploadFileService,
-  ) {}
+  ) { }
 
-  async execute(webhookData: DocuSealWebhookDto<string>): Promise<void> {
-    const { submitter, submission, document } = webhookData
+  async execute(webhookData: DocuSealWebhookDto): Promise<void> {
+    const { id, documents, metadata } = webhookData.data
 
-    const pdfName = `signed-document-${submission.id}.pdf`
+    const pdfName = `signed-document-${id}.pdf`
 
     const resultBufferType = await this.uploadFileService.downloadPDFWithMime(
-      document.download_url,
+      documents[0].url,
     )
     if (!resultBufferType) throw new ConflictException('Error downloading PDF')
 
@@ -34,15 +34,15 @@ export class ProcessWebhookImplUseCase implements ProcessWebhookUseCase {
     if (!resulteUrlSize)
       throw new ConflictException('Error to save pdf in storage')
 
-    const creditAppId = submitter.metadata?.credit_app_id
-      ? submitter.metadata?.credit_app_id
-      : ''
+    const creditAppId = metadata.credit_app_id ?? ''
 
     const newDoc: DocumentRequestDto = {
       creditApplicationId: parseInt(creditAppId),
       url: resulteUrlSize.url,
     }
+
     const documentDb = await this.digitalSignatureRepository.create(newDoc)
+
     if (!documentDb)
       throw new ConflictException('Error to create sing document')
   }

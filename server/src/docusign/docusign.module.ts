@@ -27,4 +27,4 @@ import { SharedModule } from 'src/shared/shared.module'
     },
   ],
 })
-export class DocusignModule {}
+export class DocusignModule { }
