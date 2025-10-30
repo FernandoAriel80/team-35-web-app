@@ -16,13 +16,13 @@ interface MyRouterContext {
   }
 }
 
-function Layout() {
+const Layout = () => {
   const { user } = useAuth()
 
   const isAdmin = user?.role === 'ADMIN'
 
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col min-h-screen' >
       {!isAdmin && <Header />}
 
       <div className='bg-slate-200 w-full text-slate-950 flex-1 flex flex-col'>
@@ -34,7 +34,7 @@ function Layout() {
       </div>
 
       {!isAdmin && <Footer />}
-    </div>
+    </div >
   )
 }
 

@@ -66,7 +66,7 @@ export const getAllRequests = async (
   token: string
 ) => {
   try {
-    const response = await fetch(`${BASE_URL}/`, {
+    const response = await fetch(`${VITE_BACKEND_URL}/credit-application/admin/get-all-credit-appl`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

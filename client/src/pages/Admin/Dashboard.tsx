@@ -1,25 +1,59 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table"
 
 import { Table } from "../../components/Table"
-import type { Request, StatusRequest } from "../../interfaces"
+import type { Data, StatusRequest } from "../../interfaces"
+import { getAllRequests } from "../../services/requests.service"
+import { DocumentsModal } from "../../components/modals/DocumentsModal"
 
-const columnHelper = createColumnHelper<Request>()
+interface DocumentLink {
+  url: string
+  name: string
+}
 
 export const Dashboard = () => {
-  const [requests, setRequests] = useState<Request[]>([])
+  const columnHelper = createColumnHelper<Data>()
+
+  const [requests, setRequests] = useState<Data[]>([])
+
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [documentLinks, setDocumentLinks] = useState<DocumentLink[]>([])
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+
+    if (!token) return
+
+    getAllRequests(token)
+      .then(({ data }) => setRequests(data))
+      .catch(error => console.error(error))
+
+  }, [])
+
 
   const columns = [
     columnHelper.accessor('id', {
       header: 'Id de Solicitud',
+    }),
+    columnHelper.accessor('company.name', {
+      header: 'Compania',
+    }),
+    columnHelper.accessor('company.email', {
+      header: 'Email (Compania)',
+    }),
+    columnHelper.accessor('company.user.name', {
+      header: 'Cliente',
+    }),
+    columnHelper.accessor('company.user.email', {
+      header: 'Email (Cliente)',
     }),
     columnHelper.accessor('createdAt', {
       header: 'Fecha',
       cell: ({ getValue }) => {
         const date = getValue()
 
-        return new Date(date).toISOString().split('T')[0]
+        return date
       }
     }),
     columnHelper.accessor('requestedAmount', {
@@ -32,7 +66,7 @@ export const Dashboard = () => {
     columnHelper.accessor('status', {
       header: 'Estado',
       cell: ({ getValue }) => {
-        const status: StatusRequest = getValue();
+        const status = getValue() as StatusRequest
 
         const styles = {
           PENDING: "bg-yellow-100 text-yellow-800 border-yellow-300",
@@ -56,17 +90,57 @@ export const Dashboard = () => {
         );
       },
     }),
-  ] as ColumnDef<Request>[]
+    columnHelper.accessor('documents', {
+      header: 'Documentos',
+      cell: ({ getValue }) => {
+        const documentsData = getValue()
 
-  // useEffect(() => {
-  //   const token = window.localStorage.getItem('token')
+        if (documentsData.length <= 0) return null
 
-  //   if (!token) return
+        return (
+          <button
+            className="text-blue-900 hover:underline hover:cursor-pointer"
+            onClick={() => {
+              const documentsMap = documentsData.map(({ url }, index) => ({
+                url,
+                name: `Documento ${index + 1}`
+              }))
 
-  //   getRequestsByUserId(token)
-  //     .then(data => setRequests(data))
-  //     .catch(error => console.log(error))
-  // }, [])
+              setDocumentLinks(documentsMap)
+              setIsOpenModal(true)
+            }}
+          >
+            Ver Documentos
+          </button>
+        )
+      }
+    }),
+    columnHelper.display({
+      header: 'Acciones',
+      cell: ({ row }) => {
+        const { status }: Data = row.original
+
+        if (status !== 'PENDING') return null
+
+        return (
+          <div className="flex gap-2">
+            <button
+              className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors hover:cursor-pointer"
+            >
+              Enviar a firmar
+            </button>
+
+            <button
+              className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-lg transition-colors hover:cursor-pointer"
+            >
+              Rechazar
+            </button>
+          </div>
+        )
+      },
+    }),
+  ] as ColumnDef<Data>[]
+
 
   return (
     <div className="flex min-h-screen bg-background-light font-sans text-background-dark">
@@ -90,6 +164,12 @@ export const Dashboard = () => {
         {/* Table */}
         <Table data={requests} columns={columns} />
       </main>
+
+      <DocumentsModal
+        documents={documentLinks}
+        isOpen={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+      />
     </div>
   )
 }
