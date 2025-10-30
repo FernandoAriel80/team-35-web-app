@@ -5,7 +5,7 @@ import type { NewCompany, Company } from '../../interfaces'
 interface PymeFormProps {
   mode: 'create' | 'edit'
   initialData?: Company | null
-  onSubmit: (data: NewCompany | Company) => Promise<void>
+  onSubmit: (formData: NewCompany) => Promise<void>
   isSubmitting?: boolean
 }
 
@@ -15,6 +15,21 @@ export const PymeForm = ({
   onSubmit,
   isSubmitting = false,
 }: PymeFormProps) => {
+  useEffect(() => {
+    if (mode === 'edit' && initialData) {
+      setFormData({
+        name: initialData.name,
+        type: initialData.type,
+        taxId: initialData.taxId,
+        activity: initialData.activity,
+        employeeCount: initialData.employeeCount,
+        address: initialData.address,
+        website: initialData.website || '',
+        email: initialData.email,
+      })
+    }
+  }, [mode, initialData])
+
   const [formData, setFormData] = useState<NewCompany>({
     name: '',
     type: '',
@@ -38,21 +53,6 @@ export const PymeForm = ({
     'Empresa Individual de Responsabilidad Limitada (E.I.R.L.)',
     'Otro',
   ]
-
-  useEffect(() => {
-    if (mode === 'edit' && initialData) {
-      setFormData({
-        name: initialData.name,
-        type: initialData.type,
-        taxId: initialData.taxId,
-        activity: initialData.activity,
-        employeeCount: initialData.employeeCount,
-        address: initialData.address,
-        website: initialData.website || '',
-        email: initialData.email,
-      })
-    }
-  }, [mode, initialData])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -108,6 +108,7 @@ export const PymeForm = ({
             onChange={handleChange}
             className='text-sm font-normal outline w-full rounded-sm outline-slate-300 p-2 mt-1 focus:outline-blue-500 focus:ring-1 focus:ring-blue-500'
             type='text'
+            placeholder='Ej: Innovatech'
             required
           />
         </div>

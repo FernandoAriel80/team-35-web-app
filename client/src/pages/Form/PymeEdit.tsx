@@ -1,19 +1,18 @@
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { PymeForm } from '../../components/pymes/PymeForm'
 import { updateCompany } from '../../services/companies.service'
-import type { Company } from '../../interfaces'
+import type { Company, NewCompany } from '../../interfaces'
 
 export const PymeEdit = () => {
   const navigate = useNavigate()
   const router = useRouter()
 
-  // 👇 Aquí recuperamos la pyme pasada desde el Link
   const location = router.state.location
   const company = (location.state as { company?: Company })?.company
 
   const token = localStorage.getItem('token')
 
-  const handleUpdate = async (formData: Company) => {
+  const handleUpdate = async (formData: NewCompany) => {
     if (!token) throw new Error('Token inválido')
     if (!company?.id) throw new Error('No se encontró el ID de la empresa')
 

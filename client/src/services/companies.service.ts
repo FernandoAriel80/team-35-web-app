@@ -52,39 +52,14 @@ export const createCompany = async (companyData: NewCompany, token: string) => {
   }
 }
 
-export const getCompanyById = async (
-  companyId: number,
-  token: string
-): Promise<Company> => {
-  try {
-    const response = await fetch(`${BASE_URL}/company/${companyId}`, {
-      method: 'GET', // Asumiendo que usas GET para obtener por ID
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    if (!response.ok) {
-      const error: ErrorResponse = await response.json()
-      throw error
-    }
-
-    const result = await response.json()
-    return result as Company
-  } catch (error) {
-    handleError(error as ErrorResponse)
-    throw error // Re-lanzar para manejar en el componente
-  }
-}
-
 export const updateCompany = async (
   companyId: number,
-  companyData: Company,
+  companyData: NewCompany,
   token: string
 ) => {
   try {
     const response = await fetch(`${BASE_URL}/company/${companyId}`, {
-      method: 'PATCH', // Usamos PATCH para actualizar parcialmente
+      method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
