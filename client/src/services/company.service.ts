@@ -1,16 +1,12 @@
 import type { ErrorResponse } from "../interfaces/auth.interface"
 
-const URL = import.meta.env.VITE_BASE_URL
-const PORT = import.meta.env.VITE_PORT
-const API_URL = import.meta.env.VITE_API_URL
-
-const BASE_URL = API_URL || URL + PORT
+const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 export const getCompanies = async (
   token: string
 ) => {
   try {
-    const response = await fetch(`${BASE_URL}/company/get-all-user-companies`, {
+    const response = await fetch(`${VITE_BACKEND_URL}/company/get-all-user-companies`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
