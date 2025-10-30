@@ -36,10 +36,12 @@ export class CreditApplDbResponseMapper {
         url: doc.url,
         uploadedAt: doc.uploadedAt,
       })),
-      /*  digitalSignature: app.digitalSignature.map((sig) => ({
+      digitalSignature: app.digitalSignature.map((sig) => ({
         id: sig.id,
+        url: sig.url,
+        uploadedAt: sig.uploadedAt,
         // Agrega aquí los demás campos de DigitalSignature
-      })), */
+      })),
     }
   }
   static toDtoArray(
