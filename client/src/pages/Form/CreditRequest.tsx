@@ -14,6 +14,7 @@ interface Data {
 
 export const CreditRequest = () => {
   const [step, setStep] = useState<number>(1)
+  const [isLoading, setIsLoading] = useState(false)
 
   const formDataRef = React.useRef<FormData>(new FormData());
 
@@ -45,14 +46,19 @@ export const CreditRequest = () => {
 
     if (!token) return
 
+    setIsLoading(true)
+
     await createRequest(token, formDataRef.current)
-      .then(() => setStep(3))
+      .then(() => {
+        setStep(3)
+      })
       .catch(() => alert('error al enviar solicitud'))
+      .finally(() => setIsLoading(false))
   }
 
   const stepsComponent: Record<number, React.JSX.Element> = {
     1: <CreditRequestCompany onSelectCompany={selectCompany} />,
-    2: <CreditRequestFiles onSelectFiles={selectFiles} onChangeStep={changeStep} onSubmit={handleSubmit} />,
+    2: <CreditRequestFiles onSelectFiles={selectFiles} onChangeStep={changeStep} onSubmit={handleSubmit} isLoading={isLoading} />,
     3: <CreditOnboarding />
   }
 

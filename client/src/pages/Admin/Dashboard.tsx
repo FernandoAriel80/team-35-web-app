@@ -6,6 +6,8 @@ import { Table } from "../../components/Table"
 import type { Data, StatusRequest } from "../../interfaces"
 import { changeRequestState, createSubmission, getAllRequests } from "../../services/requests.service"
 import { DocumentsModal } from "../../components/modals/DocumentsModal"
+import { useAuth } from "../../hooks/useAuth"
+import { useNavigate } from "@tanstack/react-router"
 
 interface DocumentLink {
   url: string
@@ -13,10 +15,14 @@ interface DocumentLink {
 }
 
 export const Dashboard = () => {
+  const navigate = useNavigate()
+
   const [requests, setRequests] = useState<Data[]>([])
 
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [documentLinks, setDocumentLinks] = useState<DocumentLink[]>([])
+
+  const { onLogout } = useAuth()
 
   const columnHelper = createColumnHelper<Data>()
 
@@ -45,6 +51,11 @@ export const Dashboard = () => {
           .then(({ data }) => setRequests(data))
           .catch(error => console.error(error))
       })
+  }
+
+  const handleLogout = () => {
+    onLogout()
+    navigate({ to: '/' })
   }
 
   const columns = [
@@ -80,8 +91,14 @@ export const Dashboard = () => {
     }),
     columnHelper.accessor('status', {
       header: 'Estado',
-      cell: ({ getValue }) => {
-        const status = getValue() as StatusRequest
+      cell: ({ getValue, row }) => {
+        let status = getValue() as StatusRequest
+
+        const { digitalSignature }: Data = row.original
+
+        const hasSignature = digitalSignature.length > 0
+
+        if (hasSignature && status !== 'APPROVED') status = 'PENDING'
 
         const styles = {
           PENDING: "bg-yellow-100 text-yellow-800 border-yellow-300",
@@ -133,11 +150,30 @@ export const Dashboard = () => {
       }
     }),
     columnHelper.display({
+      header: 'Documento Firmado',
+      cell: ({ row }) => {
+        const { digitalSignature } = row.original;
+
+        if (!digitalSignature || !digitalSignature[0]?.url) {
+          return <span className="text-slate-400">No disponible</span>;
+        }
+
+        const url = digitalSignature[0].url;
+
+        return (
+          <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-900">
+            <h1>Ver Documento</h1>
+          </a>
+        );
+      }
+    }),
+
+    columnHelper.display({
       header: 'Acciones',
       cell: ({ row }) => {
-        const { status, id, company }: Data = row.original
+        const { status, id, company, digitalSignature }: Data = row.original
 
-        if (status !== 'PENDING') return null
+        const hasSignature = digitalSignature.length > 0
 
         const inputData = {
           creditApplicationId: id.toString(),
@@ -145,23 +181,47 @@ export const Dashboard = () => {
         }
 
 
-        return (
-          <div className="flex gap-2">
-            <button
-              onClick={() => handleCreateSubmission(inputData)}
-              className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors hover:cursor-pointer"
-            >
-              Enviar a firmar
-            </button>
+        if (hasSignature && status !== 'APPROVED') {
+          return (
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleChangeRequestState({ creditApplicationId: inputData.creditApplicationId, status: 'APPROVED' })}
+                className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors hover:cursor-pointer"
+              >
+                Aprobar
+              </button>
 
-            <button
-              className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-lg transition-colors hover:cursor-pointer"
-              onClick={() => handleChangeRequestState({ creditApplicationId: inputData.creditApplicationId, status: 'REJECTED' })}
-            >
-              Rechazar
-            </button>
-          </div>
-        )
+              <button
+                className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-lg transition-colors hover:cursor-pointer"
+                onClick={() => handleChangeRequestState({ creditApplicationId: inputData.creditApplicationId, status: 'REJECTED' })}
+              >
+                Rechazar
+              </button>
+            </div>
+          )
+        }
+
+        if (status === 'PENDING') {
+          return (
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleCreateSubmission(inputData)}
+                className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors hover:cursor-pointer"
+              >
+                Enviar a firmar
+              </button>
+
+              <button
+                className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-lg transition-colors hover:cursor-pointer"
+                onClick={() => handleChangeRequestState({ creditApplicationId: inputData.creditApplicationId, status: 'REJECTED' })}
+              >
+                Rechazar
+              </button>
+            </div>
+          )
+        }
+
+        return null
       },
     }),
   ] as ColumnDef<Data>[]
@@ -184,6 +244,13 @@ export const Dashboard = () => {
         <h1 className="text-lg font-bold text-center w-full">Fintech Solutions</h1>
         <button className="gap-3 rounded-lg bg-primary/20 px-3 py-2 text-sm font-medium text-primary mt-8 bg-blue-200 text-blue-500">
           Solicitudes de Usuarios
+        </button>
+
+        <button
+          className='px-4 py-2 border border-red-500 text-red-600 rounded-lg hover:bg-blue-50 transition text-center cursor-pointer mt-auto'
+          onClick={handleLogout}
+        >
+          Cerrar Sesión
         </button>
       </aside>
 

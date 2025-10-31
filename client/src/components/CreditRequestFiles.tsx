@@ -2,12 +2,13 @@ import { useRef, useState } from 'react';
 import { FileIcon } from './icons/FileIcon';
 
 interface Props {
+  isLoading: boolean
   onSelectFiles: (files: File[]) => void;
   onChangeStep: (step: number) => void
   onSubmit: () => void
 }
 
-export const CreditRequestFiles = ({ onSelectFiles, onChangeStep, onSubmit }: Props) => {
+export const CreditRequestFiles = ({ isLoading, onSelectFiles, onChangeStep, onSubmit }: Props) => {
 
   const [fileNames, setFileNames] = useState<Record<number, string>>({})
 
@@ -63,7 +64,18 @@ export const CreditRequestFiles = ({ onSelectFiles, onChangeStep, onSubmit }: Pr
   ]
 
   return (
-    <div className='w-full bg-slate-100 rounded-xl flex flex-col items-center p-8 border border-slate-200 shadow'>
+    <div className='w-full bg-slate-100 rounded-xl flex flex-col items-center p-8 border border-slate-200 shadow relative'>
+
+      {
+        isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-200/50">
+            <div
+              className="inline-block size-10 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] text-blue-600"
+              role="status">
+            </div>
+          </div>
+        )
+      }
 
       <header className='text-center mb-6'>
         <h1 className='font-bold text-2xl pb-2'>Documentos y Firma Digital</h1>
