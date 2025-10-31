@@ -1,4 +1,19 @@
+import { useNavigate } from '@tanstack/react-router'
+import { useAuth } from '../../hooks/useAuth'
+
 export const Index = () => {
+  const { onValidateToken } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLoginStatus = async () => {
+    await onValidateToken()
+    if (window.localStorage.getItem('token')) {
+      navigate({ to: '/form/credit-request' })
+    } else {
+      navigate({ to: '/auth/login' })
+    }
+  }
+
   return (
     <main>
       <section className='bg-gray-800 text-center text-white py-12 px-4'>
@@ -9,7 +24,10 @@ export const Index = () => {
           Accede a créditos con procesos ágiles y sin complicaciones. Impulsa el
           crecimiento de tu negocio con Financia.
         </p>
-        <button className='px-6 py-3 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700 transition'>
+        <button
+          onClick={() => handleLoginStatus()}
+          className='px-6 py-3 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700 transition'
+        >
           Solicita tu Crédito Ahora
         </button>
       </section>
@@ -65,7 +83,10 @@ export const Index = () => {
           Comienza tu solicitud de crédito hoy mismo y da el siguiente gran paso
           para llevar tu PYME al éxito.
         </p>
-        <button className='px-6 py-3 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700 transition'>
+        <button
+          onClick={() => handleLoginStatus()}
+          className='px-6 py-3 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700 transition'
+        >
           Comenzar Solicitud
         </button>
       </section>
