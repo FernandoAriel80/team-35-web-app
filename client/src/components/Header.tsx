@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { isAuthenticated, onLogout } = useAuth()
+
   const navigate = useNavigate()
 
   const handleLogout = () => {
